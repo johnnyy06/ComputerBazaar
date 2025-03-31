@@ -1,0 +1,41 @@
+/* Category Cards */
+.bg-secondary-dark {
+    background-color: rgba(68, 68, 68, 0.2);
+  }
+  
+  .category-card {
+    display: block;
+    text-decoration: none;
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    height: 100%;
+  }
+  
+  .category-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .category-image {
+    background-color: var(--secondary-gray);
+    padding: 15px;
+    text-align: center;
+    height: 110px;
+  }
+  
+  .category-info {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .category-info h5 {
+    color: var(--white);
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  
+  .item-count {
+    color: var(--light-gray);
+    font-size: 0.8rem;
+  }

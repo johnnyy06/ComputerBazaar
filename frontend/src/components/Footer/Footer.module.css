@@ -1,0 +1,69 @@
+/* Footer Styles */
+.site-footer {
+    background-color: var(--dark-gray);
+    border-top: 1px solid var(--secondary-gray);
+  }
+  
+  .footer-links li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-links a {
+    color: var(--light-gray);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .footer-links a:hover {
+    color: var(--white);
+  }
+  
+  .social-links a {
+    color: var(--white);
+    font-size: 1.3rem;
+    transition: color 0.3s;
+  }
+  
+  .social-links a:hover {
+    color: var(--primary-red);
+  }
+  
+  .contact-info li {
+    color: var(--light-gray);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .contact-info i {
+    color: var(--primary-red);
+    margin-right: 10px;
+    font-size: 1.1rem;
+  }
+  
+  .footer-divider {
+    border-color: var(--secondary-gray);
+    opacity: 0.1;
+  }
+  
+  .copyright {
+    color: var(--light-gray);
+  }
+  
+  .payment-methods {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-icon {
+    width: 40px;
+    height: auto;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.payment-icon:hover {
+    opacity: 1;
+}

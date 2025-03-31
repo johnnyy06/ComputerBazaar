@@ -1,0 +1,59 @@
+/* Promotion Cards */
+.promo-card {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .promo-card.large {
+    min-height: 200px;
+  }
+  
+  .promo-card.small {
+    min-height: 120px;
+  }
+  
+  .bg-gradient-red {
+    background: linear-gradient(135deg, var(--primary-red) 0%, #990000 100%);
+  }
+  
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, var(--secondary-gray) 0%, var(--dark-gray) 100%);
+  }
+  
+  .promo-content {
+    padding: 20px;
+    width: 60%;
+    z-index: 1;
+  }
+  
+  .promo-content h3, .promo-content h4 {
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  
+  .promo-content p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  .promo-image {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .free-shipping-icon {
+    width: 100px;
+    height: auto;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+  }

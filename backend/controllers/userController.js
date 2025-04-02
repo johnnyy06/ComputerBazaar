@@ -1,10 +1,10 @@
 // server/controllers/userController.js
-import { findOne, create, findById } from '../models/userModel';
-import { sign } from 'jsonwebtoken';
+import User from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
 
 // Generare token JWT
 const generateToken = (id) => {
-  return sign({ id }, process.env.JWT_SECRET || 'your_jwt_secret', {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'your_jwt_secret', {
     expiresIn: '30d',
   });
 };
@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await findOne({ email });
+    const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
       res.json({
@@ -44,13 +44,13 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const userExists = await findOne({ email });
+    const userExists = await User.findOne({ email });
 
     if (userExists) {
       return res.status(400).json({ message: 'Utilizatorul există deja' });
     }
 
-    const user = await create({
+    const user = await User.create({
       name,
       email,
       password,
@@ -80,7 +80,7 @@ const registerUser = async (req, res) => {
 // @access  Private
 const getUserProfile = async (req, res) => {
   try {
-    const user = await findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select('-password');
 
     if (!user) {
       return res.status(404).json({ message: 'Utilizator negăsit' });
@@ -98,4 +98,4 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-export default { loginUser, registerUser, getUserProfile };
+export { loginUser, registerUser, getUserProfile };

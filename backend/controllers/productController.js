@@ -1,5 +1,4 @@
 // server/controllers/productController.js
-import { create } from 'domain';
 import Product from '../models/ProductModel.js';
 
 // @desc    Obține toate produsele
@@ -73,6 +72,4 @@ const createProduct = async (req, res) => {
 };
 
 // Export controllerele
-export { createProduct };
-export { getProductById };
-export { getProducts };
+export { createProduct, getProductById, getProducts };

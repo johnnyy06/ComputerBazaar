@@ -1,7 +1,6 @@
 // backend/controllers/authController.js
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 
 // Generate JWT token
 const generateToken = (id) => {
@@ -168,7 +167,8 @@ export const logoutUser = async (req, res) => {
     }
     
     res.json({ message: 'Deconectare reușită' });
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Logout error:', error);
     res.status(500).json({ message: 'Server error' });
   }

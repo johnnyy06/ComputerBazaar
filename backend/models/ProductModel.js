@@ -1,58 +1,67 @@
 import { Schema, model } from 'mongoose';
 
+const reviewSchema = new Schema({
+  user: {
+    type: String, 
+    required: true
+  },
+  rating: {
+    type: Number, 
+    required: true
+  },
+  comment: {
+    type: String, 
+    required: false
+  }
+}, { timestamps: true });
+
 const productSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  price:{
+  price: {
     type: Number,
     required: true,
   },
-  description:{
+  description: {
     type: String,
     required: true,
   },
-  images:[{
+  images: [{
     type: String,
     required: true,
   }],
-  brand:{
+  brand: {
     type: String,
     required: true,
   },
-  category:{
+  category: {
     type: String,
     required: true,
   },
-  stock:{
+  stock: {
     type: Number,
     required: true,
     default: 0,
   },
-  rating:{
+  rating: {
     type: Number,
     required: true,
+    default: 0,
   },
-  numReviews:{
+  numReviews: {
     type: Number,
     required: true,
+    default: 0,
   },
-  reviews:[{
-    user: {type: String, required: true},
-    rating: {type: Number, required: true},
-    comment: {type: String, required: false}, // comentariul nu este obligatoriu la un review
-    required: false,
-  }],
-
+  reviews: [reviewSchema],
   specifications: {
     type: Map,
     of: Schema.Types.Mixed, // poate contine valori diverse (string, numar, array, obiecte etc.)
-    required: false,
   }
-  
-  }, { timestamps: true });
+}, { timestamps: true });
 
-  const Product = model('Product', productSchema);
+const Product = model('Product', productSchema);
 
-  export default Product;
+export default Product;

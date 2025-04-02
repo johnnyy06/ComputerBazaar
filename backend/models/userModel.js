@@ -1,8 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
-// do to: se poate sa trebuiasca modificat, avand in vedere dorinta de a face ca 
-// sesiunile de conectare sa se deosebeasca prin jwt token (intre admin, user si guest)
+// backend/models/userModel.js
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const userSchema = mongoose.Schema(
   {
@@ -93,6 +91,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+// Changed from CommonJS to ES Module export
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

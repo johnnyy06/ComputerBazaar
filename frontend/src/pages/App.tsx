@@ -1,4 +1,5 @@
 // App.tsx
+import React, { JSX } from "react"; // Required only for React 16 or older
 import { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -12,7 +13,9 @@ import "./styles.css";
 
 // Context providers
 import { AuthProvider } from "../context/AuthContext";
-// import { useAuth } from "../hooks/useAuth";
+
+// Custom hooks
+import { useAuth } from "../hooks/useAuth";
 
 // Components
 import Navbar from "../components/Navbar/Navbar";
@@ -26,29 +29,28 @@ import RegisterPage from "./Register";
 import ProfilePage from "./Profile";
 
 // Protected route component
-// const ProtectedRoute = ({
-//   children,
-//   roles = [],
-// }: {
-//   children: JSX.Element;
-//   roles?: string[];
-// }) => {
-//   const { user, loading } = useAuth();
+interface ProtectedRouteProps {
+  children: JSX.Element;
+  roles?: string[];
+}
 
-//   if (loading) {
-//     return <div className="text-center p-5">Loading...</div>;
-//   }
+const ProtectedRoute = ({ children, roles = [] }: ProtectedRouteProps) => {
+  const { user, loading } = useAuth();
 
-//   if (!user) {
-//     return <Navigate to="/login" replace />;
-//   }
+  if (loading) {
+    return <div className="text-center p-5">Loading...</div>;
+  }
 
-//   if (roles.length > 0 && !roles.includes(user.role || "")) {
-//     return <Navigate to="/" replace />;
-//   }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
-//   return children;
-// };
+  if (roles.length > 0 && !roles.includes(user.role || "")) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 // Home component
 const Home = () => {
@@ -79,8 +81,14 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            {/* aici trebuie modificat pentru ca profile ar trebui sa fie o ruta protected */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
             {/* More routes can be added here */}
 
             {/* Example of a protected route for admin */}
@@ -91,7 +99,7 @@ const App: React.FC = () => {
                   <AdminDashboard />
                 </ProtectedRoute>
               } 
-            /> }
+            /> */}
 
             {/* 404 Route */}
             <Route path="*" element={<Navigate to="/" replace />} />

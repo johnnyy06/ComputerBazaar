@@ -55,12 +55,12 @@ const userSchema = mongoose.Schema(
         ref: 'Product', // referinta catre produsele favorite
       }
     ],
-    address: {
-      street: String,
-      city: String,
-      postalCode: String,
-      country: String,
-    },
+    addresses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address', // referință către adresele utilizatorului
+      }
+    ],
     phone: String,
     avatar: String,
     isVerified: {

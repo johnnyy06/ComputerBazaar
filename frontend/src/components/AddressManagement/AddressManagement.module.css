@@ -1,0 +1,58 @@
+/* Address Management Styles */
+.address-form {
+    background-color: var(--secondary-gray);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .address-card {
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .default-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--primary-red);
+    color: white;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  
+  .address-content {
+    flex-grow: 1;
+    margin-bottom: 15px;
+  }
+  
+  .address-content p {
+    color: var(--white);
+    margin-bottom: 5px;
+  }
+  
+  .address-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    border-top: 1px solid var(--secondary-gray);
+    padding-top: 15px;
+  }
+  
+  @media (max-width: 576px) {
+    .address-actions {
+      flex-direction: column;
+    }
+    
+    .address-actions button {
+      width: 100%;
+      margin-right: 0 !important;
+      margin-bottom: 5px;
+    }
+  }

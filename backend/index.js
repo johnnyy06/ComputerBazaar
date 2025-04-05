@@ -22,13 +22,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// import rute
+// import routes
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
+import addressRoutes from './routes/address.js';
 
 // folosire rute
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/users/addresses', addressRoutes);
 
 // Rută de bază pentru testare API
 app.get('/api', (req, res) => {

@@ -1,0 +1,63 @@
+/* Address Selector Styles */
+.address-selector {
+    margin-bottom: 20px;
+  }
+  
+  .address-card {
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    height: 100%;
+  }
+  
+  .address-card:hover {
+    border-color: rgba(255, 0, 0, 0.3);
+  }
+  
+  .address-card.selected {
+    border-color: var(--primary-red);
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+  
+  .default-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--primary-red);
+    color: white;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  
+  .address-content {
+    flex-grow: 1;
+    margin-bottom: 10px;
+  }
+  
+  .address-content p {
+    color: var(--white);
+    margin-bottom: 5px;
+  }
+  
+  .address-select {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .radio-button {
+    margin-right: 10px;
+  }
+  
+  .radio-button input[type="radio"] {
+    accent-color: var(--primary-red);
+    width: 18px;
+    height: 18px;
+  }

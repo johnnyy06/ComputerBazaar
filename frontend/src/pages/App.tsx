@@ -1,6 +1,5 @@
-// App.tsx
-import React, { JSX } from "react"; // Required only for React 16 or older
-import { useState } from "react";
+// frontend/src/pages/App.tsx
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,9 +13,6 @@ import "./styles.css";
 // Context providers
 import { AuthProvider } from "../context/AuthContext";
 
-// Custom hooks
-import { useAuth } from "../hooks/useAuth";
-
 // Components
 import Navbar from "../components/Navbar/Navbar";
 import Hero from "../components/Hero/Hero";
@@ -24,33 +20,12 @@ import FeaturedProducts from "../components/FeaturedProducts/FeaturedProducts";
 import Categories from "../components/Categories/Categories";
 import Promotions from "../components/Promotions/Promotions";
 import Footer from "../components/Footer/Footer";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+
+// Pages
 import LoginPage from "./Login";
 import RegisterPage from "./Register";
 import ProfilePage from "./Profile";
-
-// Protected route component
-interface ProtectedRouteProps {
-  children: JSX.Element;
-  roles?: string[];
-}
-
-const ProtectedRoute = ({ children, roles = [] }: ProtectedRouteProps) => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <div className="text-center p-5">Loading...</div>;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (roles.length > 0 && !roles.includes(user.role || "")) {
-    return <Navigate to="/" replace />;
-  }
-
-  return children;
-};
 
 // Home component
 const Home = () => {
@@ -81,6 +56,8 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+
+            {/* Protected routes */}
             <Route
               path="/profile"
               element={
@@ -89,19 +66,33 @@ const App: React.FC = () => {
                 </ProtectedRoute>
               }
             />
-            {/* More routes can be added here */}
 
-            {/* Example of a protected route for admin */}
-            {/* <Route 
-              path="/admin" 
+            {/* Admin routes */}
+            <Route
+              path="/admin/products"
               element={
-                <ProtectedRoute roles={['admin']}>
-                  <AdminDashboard />
+                <ProtectedRoute roles={["admin"]}>
+                  <div className="container mt-5 pt-5">
+                    <h1>Admin Products Page</h1>
+                    <p>This is a protected admin route</p>
+                  </div>
                 </ProtectedRoute>
-              } 
-            /> */}
+              }
+            />
 
-            {/* 404 Route */}
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute roles={["admin"]}>
+                  <div className="container mt-5 pt-5">
+                    <h1>Admin Users Page</h1>
+                    <p>This is a protected admin route</p>
+                  </div>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Catch-all route - redirect to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/index.js",
-    "server": "nodemon backend/index.js",
+    "server": "cd backend && npm run dev",
     "client": "cd frontend && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd frontend && npm run build",
@@ -21,6 +21,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

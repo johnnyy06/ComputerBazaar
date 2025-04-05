@@ -36,11 +36,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Check for user in localStorage on first render
   useEffect(() => {
-    const user = getCurrentUser();
-    if (user) {
-      setUser(user);
-    }
-    setLoading(false);
+    const checkUser = () => {
+      const user = getCurrentUser();
+      if (user) {
+        setUser(user);
+      }
+      setLoading(false);
+    };
+
+    checkUser();
   }, []);
 
   // Login function
@@ -53,6 +57,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "An error occurred during login");
+      } else if (typeof err === "object" && err !== null && "response" in err) {
+        const axiosError = err as { response: { data?: { message?: string } } };
+        setError(
+          axiosError.response?.data?.message || "An error occurred during login"
+        );
       } else {
         setError("An unknown error occurred during login");
       }
@@ -72,6 +81,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "An error occurred during registration");
+      } else if (typeof err === "object" && err !== null && "response" in err) {
+        const axiosError = err as { response: { data?: { message?: string } } };
+        setError(
+          axiosError.response?.data?.message ||
+            "An error occurred during registration"
+        );
       } else {
         setError("An unknown error occurred during registration");
       }

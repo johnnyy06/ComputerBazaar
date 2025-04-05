@@ -21,7 +21,7 @@ export const protect = async (req, res, next) => {
         process.env.JWT_SECRET || 'your_jwt_secret'
       );
 
-      // Find the user
+      // Find the user by decoded ID
       const user = await User.findById(decoded.id).select('-password');
 
       if (!user) {
@@ -35,17 +35,30 @@ export const protect = async (req, res, next) => {
         return res.status(401).json({ message: 'Sesiune invalidă. Vă rugăm să vă autentificați din nou.' });
       }
 
+      // Update session's lastActive timestamp
+      user.sessions = user.sessions.map(session => {
+        if (session.token === token) {
+          session.lastActive = Date.now();
+        }
+        return session;
+      });
+      await user.save();
+
       // Add user to request object
       req.user = user;
       next();
     } catch (error) {
       console.error(error);
+      if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Token invalid' });
+      }
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Sesiune expirată. Vă rugăm să vă autentificați din nou.' });
+      }
       res.status(401).json({ message: 'Nu sunteți autorizat, token invalid' });
     }
-  }
-
-  if (!token) {
-    res.status(401).json({ message: 'Nu sunteți autorizat, nu există token' });
+  } else {
+    return res.status(401).json({ message: 'Nu sunteți autorizat, nu există token' });
   }
 };
 

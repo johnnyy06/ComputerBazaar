@@ -39,7 +39,8 @@ export const loginUser = async (req, res) => {
         token,
         device: deviceInfo,
         ip: ipAddress,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        lastActive: Date.now()
       });
       
       user.lastLogin = Date.now();
@@ -79,6 +80,11 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Utilizatorul există deja' });
     }
 
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Parola trebuie să aibă minim 6 caractere' });
+    }
+
     // Create new user
     const user = await User.create({
       name,
@@ -99,7 +105,8 @@ export const registerUser = async (req, res) => {
         token,
         device: deviceInfo,
         ip: ipAddress,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        lastActive: Date.now()
       });
       
       user.lastLogin = Date.now();
@@ -117,6 +124,18 @@ export const registerUser = async (req, res) => {
     }
   } catch (error) {
     console.error('Register error:', error);
+    
+    // Check for MongoDB duplicate key error
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Email-ul este deja înregistrat' });
+    }
+    
+    // Check for validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(val => val.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -137,10 +156,67 @@ export const getUserProfile = async (req, res) => {
       id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role
+      role: user.role,
+      orders: user.orders,
+      favorites: user.favorites,
+      address: user.address,
+      phone: user.phone
     });
   } catch (error) {
     console.error('Get profile error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+export const updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Utilizator negăsit' });
+    }
+
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.phone = req.body.phone || user.phone;
+    
+    if (req.body.address) {
+      user.address = {
+        street: req.body.address.street || user.address?.street,
+        city: req.body.address.city || user.address?.city,
+        postalCode: req.body.address.postalCode || user.address?.postalCode,
+        country: req.body.address.country || user.address?.country
+      };
+    }
+    
+    // Update password if provided
+    if (req.body.password && req.body.password.length >= 6) {
+      user.password = req.body.password;
+    }
+
+    // Save updated user
+    const updatedUser = await user.save();
+
+    res.json({
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      address: updatedUser.address,
+      phone: updatedUser.phone
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    
+    // Check for validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(val => val.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -178,5 +254,6 @@ export default {
   loginUser,
   registerUser,
   getUserProfile,
+  updateUserProfile,
   logoutUser
 };

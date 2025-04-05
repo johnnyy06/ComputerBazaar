@@ -57,7 +57,7 @@ const Promotions: React.FC = () => {
                   </div>
                   <div className={styles["promo-image"]}>
                     <img
-                      src="/api/placeholder/150/100"
+                      src="https://placehold.co/150x100"
                       alt="RTX 4000 Series"
                       className="img-fluid"
                     />

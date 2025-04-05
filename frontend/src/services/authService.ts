@@ -1,7 +1,7 @@
 // frontend/src/services/authService.ts
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = '/api/auth';
 
 // User interface
 export interface User {
@@ -38,13 +38,13 @@ export const loginUser = async (credentials: LoginCredentials): Promise<User> =>
 
     const response = await axios.post<LoginResponse>(`${API_URL}/login`, credentials);
     
-    const data = response.data as LoginResponse;
+    const data: LoginResponse = response.data;
     if (data.token) {
       // Store user in localStorage
-      localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem('user', JSON.stringify(data));
     }
     
-    return response.data as User;
+    return data as User;
   } catch (error) {
     console.error('Login error:', error);
     throw error;
@@ -54,15 +54,23 @@ export const loginUser = async (credentials: LoginCredentials): Promise<User> =>
 // Register user
 export const registerUser = async (userData: RegisterData): Promise<User> => {
   try {
-    const response = await axios.post(`${API_URL}/register`, userData);
-    
-    const data = response.data as User;
+    interface RegisterResponse {
+      token: string;
+      id?: string;
+      name?: string;
+      email: string;
+      role?: string;
+    }
+
+    const response = await axios.post<RegisterResponse>(`${API_URL}/register`, userData);
+
+    const data: RegisterResponse = response.data; // Explicitly type response.data
     if (data.token) {
       // Store user in localStorage
-      localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem('user', JSON.stringify(data));
     }
-    
-    return response.data as User;
+
+    return data as User;
   } catch (error) {
     console.error('Register error:', error);
     throw error;
@@ -71,6 +79,20 @@ export const registerUser = async (userData: RegisterData): Promise<User> => {
 
 // Logout user
 export const logoutUser = (): void => {
+  // If possible, also call the API to invalidate the token on the server side
+  try {
+    const user = getCurrentUser();
+    if (user && user.token) {
+      axios.post(`${API_URL}/logout`, {}, {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
+  
   localStorage.removeItem('user');
 };
 

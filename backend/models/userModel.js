@@ -6,23 +6,30 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, 'Numele este obligatoriu'],
+      trim: true
     },
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email-ul este obligatoriu'],
       unique: true,
+      trim: true,
+      lowercase: true,
+      match: [
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        'Adresa de email nu este validă'
+      ]
     },
     password: {
       type: String,
-      required: true,
-      
+      required: [true, 'Parola este obligatorie'],
+      minlength: [6, 'Parola trebuie să aibă cel puțin 6 caractere']
     },
     role: {
       type: String,
       required: true,
       enum: ['user', 'admin', 'guest'], 
-      default: 'guest',
+      default: 'user', // Changed default from guest to user
     },
     sessions: [
       {
@@ -30,6 +37,7 @@ const userSchema = mongoose.Schema(
         device: String, // ex: "Chrome on Windows"
         ip: String, // Adresa IP
         createdAt: { type: Date, default: Date.now },
+        lastActive: { type: Date, default: Date.now }
       }
     ],
     lastLogin: { type: Date },
@@ -48,14 +56,27 @@ const userSchema = mongoose.Schema(
       }
     ],
     address: {
-      type: {
-        street: { type: String, required: true },
-        city: { type: String, required: true },
-        postalCode: { type: String, required: true },
-        country: { type: String, required: true },
-      },
-      required: false, // adresa este optionala
+      street: String,
+      city: String,
+      postalCode: String,
+      country: String,
     },
+    phone: String,
+    avatar: String,
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
+    verificationToken: String,
+    verificationExpires: Date,
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    }
   },
   {
     timestamps: true,
@@ -70,28 +91,39 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 // Middleware pentru hashing parola înainte de salvare
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    next();
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
-
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
     return next();
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  
-  // Șterge toate sesiunile active dacă parola se schimbă
-  this.sessions = [];
-
-  next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    
+    // Dacă parola se schimbă, șterge toate sesiunile active
+    if (this.isModified('password')) {
+      this.sessions = [];
+    }
+    
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
-// Changed from CommonJS to ES Module export
+// Generare token pentru verificare email
+userSchema.methods.generateVerificationToken = function() {
+  const verificationToken = crypto.randomBytes(20).toString('hex');
+  
+  this.verificationToken = crypto
+    .createHash('sha256')
+    .update(verificationToken)
+    .digest('hex');
+    
+  // Token expiră în 24 ore
+  this.verificationExpires = Date.now() + 24 * 60 * 60 * 1000;
+  
+  return verificationToken;
+};
+
 const User = mongoose.model('User', userSchema);
 
 export default User;

@@ -140,6 +140,66 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// @desc    Change user password
+// @route   POST /api/auth/change-password
+// @access  Private
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    
+    // Validate input
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Toate câmpurile sunt obligatorii' });
+    }
+    
+    // Validate password length
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: 'Parola nouă trebuie să aibă minim 6 caractere' });
+    }
+    
+    // Get user from req (set by auth middleware)
+    const user = await User.findById(req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'Utilizator negăsit' });
+    }
+    
+    // Check if current password is correct
+    const isMatch = await user.matchPassword(currentPassword);
+    
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Parola curentă este incorectă' });
+    }
+    
+    // Update password
+    user.password = newPassword; // Will be hashed by pre-save middleware
+    
+    // When password changes, all sessions are invalidated in the pre-save middleware
+    // Add current session back
+    const token = req.headers.authorization.split(' ')[1];
+    const deviceInfo = req.headers['user-agent'] || 'Unknown device';
+    const ipAddress = req.ip || 'Unknown IP';
+    
+    // Save user with new password
+    await user.save();
+    
+    // We don't add the current session back - this ensures the user is logged out
+    // from all devices, including the current one for security reasons
+    
+    res.json({ message: 'Parola a fost schimbată cu succes' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    
+    // Check for validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(val => val.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 // @desc    Get user profile
 // @route   GET /api/auth/profile
 // @access  Private
@@ -190,11 +250,6 @@ export const updateUserProfile = async (req, res) => {
         postalCode: req.body.address.postalCode || user.address?.postalCode,
         country: req.body.address.country || user.address?.country
       };
-    }
-    
-    // Update password if provided
-    if (req.body.password && req.body.password.length >= 6) {
-      user.password = req.body.password;
     }
 
     // Save updated user
@@ -253,6 +308,7 @@ export const logoutUser = async (req, res) => {
 export default {
   loginUser,
   registerUser,
+  changePassword,
   getUserProfile,
   updateUserProfile,
   logoutUser

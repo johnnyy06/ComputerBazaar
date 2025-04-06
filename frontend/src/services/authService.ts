@@ -77,6 +77,31 @@ export const registerUser = async (userData: RegisterData): Promise<User> => {
   }
 };
 
+export const changePassword = async (currentPassword: string, newPassword: string): Promise<void> => {
+  try {
+    const user = getCurrentUser();
+    
+    if (!user || !user.token) {
+      throw new Error('Nu sunteți autentificat');
+    }
+    
+    await axios.post(
+      `${API_URL}/change-password`,
+      { currentPassword, newPassword },
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+    );
+    
+    // Don't return anything for a void function
+  } catch (error) {
+    console.error('Change password error:', error);
+    throw error;
+  }
+};
+
 // Logout user
 export const logoutUser = (): void => {
   // If possible, also call the API to invalidate the token on the server side
@@ -119,6 +144,7 @@ export const getAuthHeader = (): { Authorization: string } | Record<string, neve
 export default {
   loginUser,
   registerUser,
+  changePassword,
   logoutUser,
   getCurrentUser,
   getAuthHeader

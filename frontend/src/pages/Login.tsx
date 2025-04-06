@@ -37,15 +37,12 @@ const LoginPage: React.FC = () => {
       // Login successful, user will be redirected to home page by the useEffect
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(
-          err.message ||
-            "Eroare la autentificare. Verificați email-ul și parola."
-        );
+        setError("Credențiale incorecte. Verificați email-ul și parola.");
       } else if (typeof err === "object" && err !== null && "response" in err) {
         const axiosError = err as { response: { data?: { message?: string } } };
         setError(
           axiosError.response?.data?.message ||
-            "Eroare la autentificare. Verificați email-ul și parola."
+            "Credențiale incorecte. Verificați email-ul și parola."
         );
       } else {
         setError("Eroare necunoscută.");

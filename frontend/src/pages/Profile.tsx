@@ -1,15 +1,18 @@
+//frontend/src/pages/Profile.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import AddressManagement from "../components/AddressManagement/AddressManagement";
+import PasswordChange from "../components/PasswordChange/PasswordChange";
 
 enum ProfileTab {
   PROFILE = "profile",
   ORDERS = "orders",
   ADDRESSES = "addresses",
   FAVORITES = "favorites",
+  PASSWORD = "password",
 }
 
 const ProfilePage: React.FC = () => {
@@ -17,8 +20,6 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<ProfileTab>(ProfileTab.PROFILE);
@@ -39,8 +40,15 @@ const ProfilePage: React.FC = () => {
     e.preventDefault();
 
     // Form validation
-    if (password !== confirmPassword) {
-      setErrorMessage("Parolele nu coincid");
+    if (!name.trim() || !email.trim()) {
+      setErrorMessage("Numele și email-ul sunt obligatorii");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Adresa de email nu este validă");
       return;
     }
 
@@ -48,10 +56,6 @@ const ProfilePage: React.FC = () => {
     // For now, just show a success message
     setSuccessMessage("Profilul a fost actualizat cu succes!");
     setErrorMessage(null);
-
-    // Clear password fields
-    setPassword("");
-    setConfirmPassword("");
 
     // Hide success message after 3 seconds
     setTimeout(() => {
@@ -115,50 +119,6 @@ const ProfilePage: React.FC = () => {
                 />
               </div>
 
-              <h5 className="text-white mt-4 mb-3">Schimbă parola</h5>
-
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label text-white">
-                  Parolă nouă
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={{
-                    backgroundColor: "#222",
-                    color: "#FFFFFF",
-                    border: "1px solid #666",
-                  }}
-                />
-                <small className="text-white-50">
-                  Lasă gol dacă nu dorești să schimbi parola
-                </small>
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="confirmPassword"
-                  className="form-label text-white"
-                >
-                  Confirmă parola
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  style={{
-                    backgroundColor: "#222",
-                    color: "#FFFFFF",
-                    border: "1px solid #666",
-                  }}
-                />
-              </div>
-
               <button type="submit" className="btn btn-danger">
                 Salvează modificările
               </button>
@@ -175,6 +135,8 @@ const ProfilePage: React.FC = () => {
         return (
           <h3 className="text-white">Produsele favorite vor fi afișate aici</h3>
         );
+      case ProfileTab.PASSWORD:
+        return <PasswordChange />;
       default:
         return null;
     }
@@ -249,6 +211,20 @@ const ProfilePage: React.FC = () => {
                     onClick={() => setActiveTab(ProfileTab.FAVORITES)}
                   >
                     Produse favorite
+                  </button>
+                  <button
+                    className={`list-group-item list-group-item-action ${
+                      activeTab === ProfileTab.PASSWORD ? "active" : ""
+                    }`}
+                    style={{
+                      backgroundColor:
+                        activeTab === ProfileTab.PASSWORD ? "#FF0000" : "#333",
+                      color: "white",
+                      border: "none",
+                    }}
+                    onClick={() => setActiveTab(ProfileTab.PASSWORD)}
+                  >
+                    Schimbă parola
                   </button>
                   <button
                     className="list-group-item list-group-item-action text-danger"

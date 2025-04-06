@@ -6,6 +6,7 @@ import {
   registerUser,
   logoutUser,
   getCurrentUser,
+  updateLocalUserData,
   LoginCredentials,
   RegisterData,
 } from "../services/authService";
@@ -17,6 +18,7 @@ interface AuthContextType {
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
+  updateUserName: (name: string) => void;
   error: string | null;
 }
 
@@ -96,6 +98,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // Update user name function
+  const updateUserName = (name: string) => {
+    if (user) {
+      // Create a new user object with the updated name
+      const updatedUser = { ...user, name };
+      
+      // Update local state
+      setUser(updatedUser);
+      
+      // Update the user data in localStorage
+      updateLocalUserData(updatedUser);
+    }
+  };
+
   // Logout function
   const logout = () => {
     logoutUser();
@@ -109,6 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     register,
     logout,
+    updateUserName,
     error,
   };
 

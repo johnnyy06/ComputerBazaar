@@ -64,7 +64,7 @@ export const registerUser = async (userData: RegisterData): Promise<User> => {
 
     const response = await axios.post<RegisterResponse>(`${API_URL}/register`, userData);
 
-    const data: RegisterResponse = response.data; // Explicitly type response.data
+    const data: RegisterResponse = response.data;
     if (data.token) {
       // Store user in localStorage
       localStorage.setItem('user', JSON.stringify(data));
@@ -74,6 +74,17 @@ export const registerUser = async (userData: RegisterData): Promise<User> => {
   } catch (error) {
     console.error('Register error:', error);
     throw error;
+  }
+};
+
+// Update user data in localStorage
+export const updateLocalUserData = (userData: User): void => {
+  const userStr = localStorage.getItem('user');
+  if (userStr) {
+    const user = JSON.parse(userStr);
+    // Keep the token and other properties, just update what's provided
+    const updatedUser = { ...user, ...userData };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   }
 };
 
@@ -144,6 +155,7 @@ export const getAuthHeader = (): { Authorization: string } | Record<string, neve
 export default {
   loginUser,
   registerUser,
+  updateLocalUserData,
   changePassword,
   logoutUser,
   getCurrentUser,

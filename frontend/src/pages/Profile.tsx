@@ -1,4 +1,4 @@
-//frontend/src/pages/Profile.tsx
+// frontend/src/pages/Profile.tsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import AddressManagement from "../components/AddressManagement/AddressManagement";
 import PasswordChange from "../components/PasswordChange/PasswordChange";
+import { updateUserProfile } from "../services/userService";
 
 enum ProfileTab {
   PROFILE = "profile",
@@ -16,7 +17,7 @@ enum ProfileTab {
 }
 
 const ProfilePage: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUserName } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,10 +25,16 @@ const ProfilePage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<ProfileTab>(ProfileTab.PROFILE);
 
+  // New state variables for editing mode
+  const [editName, setEditName] = useState(false);
+  const [tempName, setTempName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     if (user) {
       setName(user.name || "");
       setEmail(user.email || "");
+      setTempName(user.name || "");
     }
   }, [user]);
 
@@ -36,31 +43,59 @@ const ProfilePage: React.FC = () => {
     navigate("/");
   };
 
-  const handleUpdateProfile = (e: React.FormEvent) => {
+  const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Form validation
-    if (!name.trim() || !email.trim()) {
-      setErrorMessage("Numele și email-ul sunt obligatorii");
+    // Form validation for name
+    if (editName && !tempName.trim()) {
+      setErrorMessage("Numele este obligatoriu");
       return;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessage("Adresa de email nu este validă");
-      return;
+    try {
+      setIsLoading(true);
+      setErrorMessage(null);
+
+      // Call the API to update the user profile in the database
+      await updateUserProfile({ name: tempName });
+
+      // Update local state
+      setName(tempName);
+
+      // Update user data in the global auth context and localStorage
+      if (updateUserName) {
+        updateUserName(tempName);
+      }
+
+      // Show success message
+      setSuccessMessage("Profilul a fost actualizat cu succes!");
+
+      // Reset edit mode
+      setEditName(false);
+
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("A apărut o eroare la actualizarea profilului");
+      }
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    // Here you would normally call an API to update the user profile
-    // For now, just show a success message
-    setSuccessMessage("Profilul a fost actualizat cu succes!");
-    setErrorMessage(null);
-
-    // Hide success message after 3 seconds
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 3000);
+  // Toggle edit mode for name
+  const toggleEditName = () => {
+    if (editName) {
+      // If canceling edit, reset to original value
+      setTempName(name);
+    }
+    setEditName(!editName);
   };
 
   const renderTabContent = () => {
@@ -84,44 +119,96 @@ const ProfilePage: React.FC = () => {
 
             <form onSubmit={handleUpdateProfile}>
               <div className="mb-3">
-                <label htmlFor="name" className="form-label text-white">
+                <label className="form-label text-white d-block">
                   Nume complet
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  style={{
-                    backgroundColor: "#222",
-                    color: "#FFFFFF",
-                    border: "1px solid #666",
-                  }}
-                />
+                <div className="d-flex align-items-center">
+                  {!editName ? (
+                    <>
+                      <div
+                        className="py-2 px-3 me-2 flex-grow-1"
+                        style={{
+                          backgroundColor: "#222",
+                          color: "#FFFFFF",
+                          border: "1px solid #666",
+                          borderRadius: "0.25rem",
+                        }}
+                      >
+                        {name}
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-light"
+                        onClick={toggleEditName}
+                      >
+                        Modifică
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        className="form-control me-2"
+                        value={tempName}
+                        onChange={(e) => setTempName(e.target.value)}
+                        style={{
+                          backgroundColor: "#222",
+                          color: "#FFFFFF",
+                          border: "1px solid #666",
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger me-2"
+                        onClick={toggleEditName}
+                      >
+                        Anulează
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
 
               <div className="mb-3">
-                <label htmlFor="email" className="form-label text-white">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  style={{
-                    backgroundColor: "#222",
-                    color: "#FFFFFF",
-                    border: "1px solid #666",
-                  }}
-                />
+                <label className="form-label text-white d-block">Email</label>
+                <div className="d-flex align-items-center">
+                  <div
+                    className="py-2 px-3 me-2 flex-grow-1"
+                    style={{
+                      backgroundColor: "#222",
+                      color: "#FFFFFF",
+                      border: "1px solid #666",
+                      borderRadius: "0.25rem",
+                    }}
+                  >
+                    {email}
+                  </div>
+                  <span className="text-white-50 small">
+                    Adresa de email nu poate fi modificată
+                  </span>
+                </div>
               </div>
 
-              <button type="submit" className="btn btn-danger">
-                Salvează modificările
-              </button>
+              {editName && (
+                <button
+                  type="submit"
+                  className="btn btn-danger"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm me-2"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      <span>Se salvează...</span>
+                    </>
+                  ) : (
+                    "Salvează modificările"
+                  )}
+                </button>
+              )}
             </form>
           </>
         );

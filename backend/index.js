@@ -26,11 +26,13 @@ app.use(express.urlencoded({ extended: true }));
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
 import addressRoutes from './routes/address.js';
+import adminRoutes from './routes/admin.js';
 
 // folosire rute
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users/addresses', addressRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Rută de bază pentru testare API
 app.get('/api', (req, res) => {

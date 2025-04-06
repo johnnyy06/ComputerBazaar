@@ -1,0 +1,78 @@
+/* frontend/src/components/Product/ProductGallery.module.css */
+.gallery {
+    margin-bottom: 2rem;
+  }
+  
+  .mainImage {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  
+  .mainImageImg {
+    max-height: 400px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.5s;
+  }
+  
+  .mainImage:hover .mainImageImg {
+    transform: scale(1.05);
+  }
+  
+  .thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px 0;
+  }
+  
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  
+  .thumbnailImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .thumbnail.active {
+    border-color: var(--primary-red);
+  }
+  
+  .thumbnail:hover {
+    border-color: var(--primary-red);
+    transform: translateY(-3px);
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .mainImageImg {
+      max-height: 300px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .thumbnails {
+      justify-content: center;
+    }
+    
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+    }
+  }

@@ -1,0 +1,40 @@
+/* frontend/src/pages/admin/UserManagement.css */
+.current-user-row {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+  }
+  
+  .table button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--secondary-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: bold;
+  }
+  
+  .btn-group .btn {
+    margin-right: 3px;
+  }
+  
+  .alert {
+    animation: fadeIn 0.3s;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

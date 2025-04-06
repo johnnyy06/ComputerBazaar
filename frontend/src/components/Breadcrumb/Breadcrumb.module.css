@@ -1,0 +1,41 @@
+/* frontend/src/components/Product/Breadcrumb.module.css */
+.container {
+    margin-bottom: 1.5rem;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: 1rem;
+    list-style: none;
+  }
+  
+  .breadcrumbItem {
+    position: relative;
+    padding-right: 0.8rem;
+    margin-right: 0.8rem;
+    color: var(--light-gray);
+  }
+  
+  .breadcrumbItem:not(:last-child)::after {
+    content: '>';
+    position: absolute;
+    right: -5px;
+    top: 0;
+    color: var(--light-gray);
+  }
+  
+  .link {
+    color: var(--light-gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .link:hover {
+    color: var(--primary-red);
+  }
+  
+  .active {
+    color: var(--white);
+  }

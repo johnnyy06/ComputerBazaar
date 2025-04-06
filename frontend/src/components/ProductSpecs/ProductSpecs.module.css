@@ -1,0 +1,39 @@
+/* frontend/src/components/Product/ProductSpecs.module.css */
+.specifications {
+    margin-top: 2rem;
+  }
+  
+  .title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  
+  .tableContainer {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table tr:not(:last-child) {
+    border-bottom: 1px solid var(--secondary-gray);
+  }
+  
+  .specName {
+    width: 30%;
+    font-weight: 600;
+    padding: 12px 15px;
+    color: var(--white);
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  .specValue {
+    padding: 12px 15px;
+    color: var(--light-gray);
+  }

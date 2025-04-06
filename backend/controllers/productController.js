@@ -1,23 +1,47 @@
-// server/controllers/productController.js
+// backend/controllers/productController.js
 import Product from '../models/ProductModel.js';
 
-// @desc    Obține toate produsele
+// @desc    Get all products
 // @route   GET /api/products
 // @access  Public
-const getProducts = async (req, res) => {
+export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
-    res.json(products);
+    const pageSize = 10;
+    const page = Number(req.query.pageNumber) || 1;
+    
+    const keyword = req.query.keyword
+      ? {
+          name: {
+            $regex: req.query.keyword,
+            $options: 'i',
+          },
+        }
+      : {};
+    
+    const category = req.query.category ? { category: req.query.category } : {};
+    
+    const count = await Product.countDocuments({ ...keyword, ...category });
+    const products = await Product.find({ ...keyword, ...category })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1))
+      .sort({ createdAt: -1 });
+    
+    res.json({
+      products,
+      page,
+      pages: Math.ceil(count / pageSize),
+      totalProducts: count,
+    });
   } catch (error) {
     console.error('Get products error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Obține un singur produs
+// @desc    Get a single product
 // @route   GET /api/products/:id
 // @access  Public
-const getProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
@@ -32,44 +56,137 @@ const getProductById = async (req, res) => {
   }
 };
 
-// @desc    Adaugă un produs nou
-// @route   POST /api/products
+// @desc    Create a product
+// @route   POST /api/admin/products
 // @access  Private/Admin
-const createProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
   try {
     const {
       name,
       price,
       description,
-      image,
+      images,
       brand,
-      stock,
-      rating,
       category,
-      numReviews,
-      reviews,
+      stock,
+      specifications
     } = req.body;
+
+    // Validate required fields
+    if (!name || !price || !description || !images || !brand || !category) {
+      return res.status(400).json({
+        message: 'Toate câmpurile obligatorii trebuie completate'
+      });
+    }
 
     const product = new Product({
       name,
       price,
       description,
-      image,
+      images: Array.isArray(images) ? images : [images],
       brand,
-      stock,
-      rating,
       category,
-      numReviews,
-      reviews,
+      stock: stock || 0,
+      rating: 0,
+      numReviews: 0,
+      specifications: specifications || {}
     });
 
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
     console.error('Create product error:', error);
+    
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(val => val.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// Export controllerele
-export { createProduct, getProductById, getProducts };
+// @desc    Update a product
+// @route   PUT /api/admin/products/:id
+// @access  Private/Admin
+export const updateProduct = async (req, res) => {
+  try {
+    const {
+      name,
+      price,
+      description,
+      images,
+      brand,
+      category,
+      stock,
+      specifications
+    } = req.body;
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Produs negăsit' });
+    }
+
+    // Update fields
+    product.name = name || product.name;
+    product.price = price || product.price;
+    product.description = description || product.description;
+    product.images = images || product.images;
+    product.brand = brand || product.brand;
+    product.category = category || product.category;
+    product.stock = stock !== undefined ? stock : product.stock;
+    
+    // Handle specifications (which is a Map)
+    if (specifications) {
+      // Clear existing specifications if empty object provided
+      if (Object.keys(specifications).length === 0) {
+        product.specifications = new Map();
+      } else {
+        // Update specifications
+        Object.entries(specifications).forEach(([key, value]) => {
+          product.specifications.set(key, value);
+        });
+      }
+    }
+
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
+  } catch (error) {
+    console.error('Update product error:', error);
+    
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(val => val.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Delete a product
+// @route   DELETE /api/admin/products/:id
+// @access  Private/Admin
+export const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Produs negăsit' });
+    }
+
+    await product.remove();
+    res.json({ message: 'Produsul a fost șters' });
+  } catch (error) {
+    console.error('Delete product error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export default {
+  getProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
+};

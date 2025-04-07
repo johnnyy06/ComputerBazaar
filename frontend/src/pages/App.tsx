@@ -79,7 +79,17 @@ const App: React.FC = () => {
               path="/admin/dashboard"
               element={
                 <ProtectedRoute roles={["admin"]}>
-                  <AdminDashboard />
+                  <AdminDashboard
+                    stats={{
+                      userCount: 0,
+                      productCount: 0,
+                      orderCount: 0,
+                      totalRevenue: 0,
+                      lowStockCount: 0,
+                      recentOrders: [],
+                      topProducts: [],
+                    }}
+                  />
                 </ProtectedRoute>
               }
             />

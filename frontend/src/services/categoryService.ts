@@ -19,12 +19,11 @@ export interface CategoryData {
 export const getCategories = async (): Promise<CategoryData[]> => {
   try {
     const response = await api.get<CategoryData[]>('/categories');
-    return response.data;
+    return response.data || [];
   } catch (error) {
     console.error('Error fetching categories:', error);
     
-    // For now, return a default set of categories if the API fails
-    // This can be removed once the category API is implemented
+    // Return a default set of categories if the API fails
     return [
       { _id: '1', name: 'Procesoare' },
       { _id: '2', name: 'Plăci video' },

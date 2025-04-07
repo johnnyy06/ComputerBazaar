@@ -37,17 +37,7 @@ const ProductManagement: React.FC = () => {
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  useEffect(() => {
-    // Check if user is admin
-    if (!user || user.role !== "admin") {
-      navigate("/login");
-      return;
-    }
-
-    fetchProducts();
-  }, [user, navigate, currentPage]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = React.useCallback(async () => {
     try {
       setLoading(true);
       const data = await getProducts(currentPage);
@@ -60,7 +50,17 @@ const ProductManagement: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    // Check if user is admin
+    if (!user || user.role !== "admin") {
+      navigate("/login");
+      return;
+    }
+
+    fetchProducts();
+  }, [user, navigate, fetchProducts]);
 
   const handleOpenProductForm = (product: ProductData | null = null) => {
     setEditingProduct(product);
@@ -278,94 +278,86 @@ const ProductManagement: React.FC = () => {
         </div>
       </div>
 
-      {/* Product Form Modal */}
       {showProductForm && (
-        <div
-          className="modal fade show"
-          style={{ display: "block" }}
-          tabIndex={-1}
-        >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title">
-                  {editingProduct ? "Editare produs" : "Adăugare produs nou"}
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close btn-close-white"
-                  onClick={handleCloseProductForm}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <ProductForm
-                  product={editingProduct}
-                  onSave={handleProductSaved}
-                  onCancel={handleCloseProductForm}
-                />
+        <>
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-dialog-centered modal-lg">
+              <div className="modal-content bg-dark text-white">
+                <div className="modal-header">
+                  <h5 className="modal-title">
+                    {editingProduct ? "Editare produs" : "Adăugare produs nou"}
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close btn-close-white"
+                    onClick={handleCloseProductForm}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <ProductForm
+                    product={editingProduct}
+                    onSave={handleProductSaved}
+                    onCancel={handleCloseProductForm}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+          <div className="modal-backdrop fade show"></div>
+        </>
       )}
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div
-          className="modal fade show"
-          style={{ display: "block" }}
-          tabIndex={-1}
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title">Confirmare ștergere</h5>
-                <button
-                  type="button"
-                  className="btn-close btn-close-white"
-                  onClick={() => setShowDeleteModal(false)}
-                  disabled={deleteLoading}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <p>Sunteți sigur că doriți să ștergeți acest produs?</p>
-                <p className="text-danger">
-                  Această acțiune nu poate fi anulată.
-                </p>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowDeleteModal(false)}
-                  disabled={deleteLoading}
-                >
-                  Anulare
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={handleConfirmDelete}
-                  disabled={deleteLoading}
-                >
-                  {deleteLoading ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2"></span>
-                      Se șterge...
-                    </>
-                  ) : (
-                    "Șterge definitiv"
-                  )}
-                </button>
+        <>
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content bg-dark text-white">
+                <div className="modal-header">
+                  <h5 className="modal-title">Confirmare ștergere</h5>
+                  <button
+                    type="button"
+                    className="btn-close btn-close-white"
+                    onClick={() => setShowDeleteModal(false)}
+                    disabled={deleteLoading}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <p>Sunteți sigur că doriți să ștergeți acest produs?</p>
+                  <p className="text-danger">
+                    Această acțiune nu poate fi anulată.
+                  </p>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowDeleteModal(false)}
+                    disabled={deleteLoading}
+                  >
+                    Anulare
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={handleConfirmDelete}
+                    disabled={deleteLoading}
+                  >
+                    {deleteLoading ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2"></span>
+                        Se șterge...
+                      </>
+                    ) : (
+                      "Șterge definitiv"
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {/* Modal backdrop */}
-      {(showProductForm || showDeleteModal) && (
-        <div className="modal-backdrop fade show"></div>
+          <div className="modal-backdrop fade show"></div>
+        </>
       )}
 
       <Footer />

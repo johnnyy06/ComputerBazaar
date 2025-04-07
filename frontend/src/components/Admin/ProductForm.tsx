@@ -1,4 +1,3 @@
-// frontend/src/components/Admin/ProductForm.tsx
 import React, { useState, useEffect } from "react";
 import {
   createProduct,
@@ -48,7 +47,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       setName(product.name || "");
       setPrice(product.price?.toString() || "");
       setDescription(product.description || "");
-      setImages(product.images || []);
+      setImages(Array.isArray(product.images) ? product.images : []);
       setBrand(product.brand || "");
       setCategory(product.category || "");
       setStock(product.stock?.toString() || "");
@@ -57,7 +56,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       if (product.specifications) {
         const specsObj: { [key: string]: string } = {};
         // Handle specifications as either a Map or regular object
-        if (typeof product.specifications.forEach === "function") {
+        if (product.specifications instanceof Map) {
           product.specifications.forEach((value, key) => {
             specsObj[key] = value;
           });
@@ -75,10 +74,16 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const fetchCategories = async () => {
     try {
       const categoriesData = await getCategories();
-      setCategories(categoriesData);
+      if (Array.isArray(categoriesData)) {
+        setCategories(categoriesData);
+      } else {
+        console.error("Categories data is not an array:", categoriesData);
+        setCategories([]);
+      }
     } catch (err) {
       console.error("Error fetching categories:", err);
       // Don't show error here, just log it
+      setCategories([]);
     }
   };
 
@@ -114,14 +119,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
     e.preventDefault();
 
     // Validate required fields
-    if (
-      !name ||
-      !price ||
-      !description ||
-      images.length === 0 ||
-      !brand ||
-      !category
-    ) {
+    if (!name || !price || images.length === 0 || !brand || !category) {
       setError("Toate câmpurile marcate cu * sunt obligatorii");
       return;
     }
@@ -247,13 +245,14 @@ const ProductForm: React.FC<ProductFormProps> = ({
               required
             >
               <option value="">Selectează categoria</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat.name}>
-                  {cat.name}
-                </option>
-              ))}
+              {Array.isArray(categories) &&
+                categories.map((cat) => (
+                  <option key={cat._id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
               {/* Fallback options if categories failed to load */}
-              {categories.length === 0 && (
+              {(!Array.isArray(categories) || categories.length === 0) && (
                 <>
                   <option value="Procesoare">Procesoare</option>
                   <option value="Plăci video">Plăci video</option>
@@ -289,7 +288,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       {/* Description */}
       <div className="mb-3">
         <label htmlFor="productDescription" className="form-label">
-          Descriere produs *
+          Descriere produs
         </label>
         <textarea
           className="form-control bg-dark text-white"
@@ -297,7 +296,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
           rows={5}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          required
         ></textarea>
       </div>
 

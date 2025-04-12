@@ -167,7 +167,7 @@ const ProductManagement: React.FC = () => {
                               <td>
                                 {product.images && product.images.length > 0 ? (
                                   <img
-                                    src={product.images[0]}
+                                    src={typeof product.images[0] === "string" ? product.images[0] : undefined}
                                     alt={product.name}
                                     width="50"
                                     height="50"

@@ -5,6 +5,8 @@ import {
   ProductData,
 } from "../../services/productService";
 import { getCategories, CategoryData } from "../../services/categoryService";
+import { UploadedImage } from "../../services/uploadService";
+import ImageUpload from "../ImageUpload/ImageUpload";
 
 interface ProductFormProps {
   product: ProductData | null;
@@ -21,8 +23,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [imageInput, setImageInput] = useState("");
+  const [productImages, setProductImages] = useState<UploadedImage[]>([]);
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
@@ -47,7 +48,30 @@ const ProductForm: React.FC<ProductFormProps> = ({
       setName(product.name || "");
       setPrice(product.price?.toString() || "");
       setDescription(product.description || "");
-      setImages(Array.isArray(product.images) ? product.images : []);
+
+      // Convert any existing images to UploadedImage format
+      if (product.images && product.images.length > 0) {
+        const images = (product.images as (UploadedImage | string)[]).map(
+          (img) => {
+            // If image is already in UploadedImage format
+            if (
+              typeof img === "object" &&
+              img !== null &&
+              "url" in img &&
+              "publicId" in img
+            ) {
+              return img as UploadedImage;
+            }
+            // If image is just a string URL (old format)
+            return {
+              url: typeof img === "string" ? img : "",
+              publicId: typeof img === "string" ? `legacy-${Date.now()}` : "",
+            };
+          }
+        );
+        setProductImages(images);
+      }
+
       setBrand(product.brand || "");
       setCategory(product.category || "");
       setStock(product.stock?.toString() || "");
@@ -87,17 +111,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
     }
   };
 
-  const handleAddImage = () => {
-    if (imageInput.trim()) {
-      setImages([...images, imageInput.trim()]);
-      setImageInput("");
-    }
-  };
-
-  const handleRemoveImage = (index: number) => {
-    setImages(images.filter((_, i) => i !== index));
-  };
-
   const handleAddSpecification = () => {
     if (newSpecKey.trim() && newSpecValue.trim()) {
       setSpecifications({
@@ -115,11 +128,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
     setSpecifications(newSpecs);
   };
 
+  const handleImagesUploaded = (images: UploadedImage[]) => {
+    setProductImages(images);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate required fields
-    if (!name || !price || images.length === 0 || !brand || !category) {
+    if (!name || !price || productImages.length === 0 || !brand || !category) {
       setError("Toate câmpurile marcate cu * sunt obligatorii");
       return;
     }
@@ -140,7 +157,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       name,
       price: parseFloat(price),
       description,
-      images,
+      images: productImages,
       brand,
       category,
       stock: stock ? parseInt(stock) : 0,
@@ -299,56 +316,20 @@ const ProductForm: React.FC<ProductFormProps> = ({
         ></textarea>
       </div>
 
-      {/* Images */}
+      {/* Images - Using the new ImageUpload component */}
       <div className="mb-3">
         <label className="form-label">Imagini produs *</label>
-        <div className="input-group mb-2">
-          <input
-            type="text"
-            className="form-control bg-dark text-white"
-            placeholder="URL imagine"
-            value={imageInput}
-            onChange={(e) => setImageInput(e.target.value)}
-          />
-          <button
-            type="button"
-            className="btn btn-outline-light"
-            onClick={handleAddImage}
-          >
-            Adaugă imagine
-          </button>
+        <div className="mb-2">
+          <small className="text-muted">
+            Adăugați cel puțin o imagine a produsului. Maxim 5 imagini.
+          </small>
         </div>
-        <small className="text-muted">
-          Adăugați cel puțin o imagine a produsului
-        </small>
-
-        {images.length > 0 && (
-          <div className="mt-2 product-images-container">
-            {images.map((img, index) => (
-              <div key={index} className="product-image-item">
-                <div className="product-image-preview">
-                  <img
-                    src={img}
-                    alt={`Preview ${index}`}
-                    className="img-thumbnail"
-                  />
-                </div>
-                <div className="d-flex justify-content-between mt-1">
-                  <small className="text-truncate">
-                    {img.substring(0, 30)}...
-                  </small>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleRemoveImage(index)}
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <ImageUpload
+          multiple={true}
+          maxFiles={5}
+          existingImages={productImages}
+          onImagesUploaded={handleImagesUploaded}
+        />
       </div>
 
       {/* Specifications */}

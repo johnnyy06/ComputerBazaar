@@ -1,5 +1,6 @@
 // backend/controllers/productController.js
 import Product from '../models/ProductModel.js';
+import { deleteImage } from '../config/cloudinary.js';
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -79,11 +80,14 @@ export const createProduct = async (req, res) => {
       });
     }
 
+    // Ensure images is an array
+    const productImages = Array.isArray(images) ? images : [images];
+
     const product = new Product({
       name,
       price,
       description,
-      images: Array.isArray(images) ? images : [images],
+      images: productImages,
       brand,
       category,
       stock: stock || 0,
@@ -132,7 +136,12 @@ export const updateProduct = async (req, res) => {
     product.name = name || product.name;
     product.price = price || product.price;
     product.description = description || product.description;
-    product.images = images || product.images;
+    
+    // Update images if provided
+    if (images) {
+      product.images = Array.isArray(images) ? images : [images];
+    }
+    
     product.brand = brand || product.brand;
     product.category = category || product.category;
     product.stock = stock !== undefined ? stock : product.stock;
@@ -175,7 +184,21 @@ export const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: 'Produs negăsit' });
     }
 
-    await product.remove();
+    // Delete all images from Cloudinary
+    if (product.images && product.images.length > 0) {
+      const deletePromises = product.images.map(image => {
+        if (image.publicId) {
+          return deleteImage(image.publicId);
+        }
+        return Promise.resolve();
+      });
+
+      await Promise.all(deletePromises);
+    }
+
+    // Delete the product
+    await product.deleteOne();
+    
     res.json({ message: 'Produsul a fost șters' });
   } catch (error) {
     console.error('Delete product error:', error);

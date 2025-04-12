@@ -1,5 +1,6 @@
 // frontend/src/services/productService.ts
 import api from './api';
+import { UploadedImage } from './uploadService';
 
 // Product data interface
 export interface ProductData {
@@ -7,7 +8,8 @@ export interface ProductData {
   name: string;
   price: number;
   description: string;
-  images: string[];
+  // Updated to handle both legacy string URLs and new Cloudinary image objects
+  images: (string | UploadedImage)[];
   brand: string;
   category: string;
   stock: number;

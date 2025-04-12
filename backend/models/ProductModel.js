@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 
+// Schema for product reviews
 const reviewSchema = new Schema({
   user: {
     type: String, 
@@ -15,6 +16,21 @@ const reviewSchema = new Schema({
   }
 }, { timestamps: true });
 
+// Schema for product images
+const imageSchema = new Schema({
+  url: {
+    type: String,
+    required: true
+  },
+  publicId: {
+    type: String,
+    required: true
+  },
+  originalName: {
+    type: String
+  }
+});
+
 const productSchema = new Schema({
   name: {
     type: String,
@@ -28,10 +44,7 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  images: [{
-    type: String,
-    required: true,
-  }],
+  images: [imageSchema],
   brand: {
     type: String,
     required: true,

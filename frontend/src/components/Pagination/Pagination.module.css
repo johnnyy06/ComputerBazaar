@@ -1,0 +1,65 @@
+.paginationContainer {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pagination {
+  margin-top: 15px;
+  width: 100%;
+}
+
+.paginationInfo {
+  color: var(--light-gray);
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.paginationInfo strong {
+  color: var(--white);
+}
+
+/* Override Bootstrap pagination styles */
+:global(.pagination .page-item .page-link) {
+  background-color: var(--dark-gray);
+  color: var(--white);
+  border-color: var(--secondary-gray);
+  transition: all 0.3s ease;
+}
+
+:global(.pagination .page-item.active .page-link) {
+  background-color: var(--primary-red);
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+:global(.pagination .page-item.disabled .page-link) {
+  background-color: var(--dark-gray);
+  color: var(--light-gray);
+  cursor: not-allowed;
+}
+
+:global(.pagination .page-item:not(.active):not(.disabled) .page-link:hover) {
+  background-color: var(--secondary-gray);
+  color: var(--white);
+}
+
+:global(.pagination .page-item:not(.active):not(.disabled) .page-link:focus) {
+  box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+  z-index: 3;
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+  :global(.pagination .page-link) {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  :global(.pagination .page-item:not(:first-child):not(:last-child):not(.active)) {
+    display: none;
+  }
+}

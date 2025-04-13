@@ -1,5 +1,5 @@
 // frontend/src/pages/App.tsx
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,6 +12,7 @@ import "./styles.css";
 
 // Context providers
 import { AuthProvider } from "../context/AuthContext";
+import { CartProvider } from "../context/CartContext";
 
 // Components
 import Navbar from "../components/Navbar/Navbar";
@@ -27,6 +28,8 @@ import LoginPage from "./Login";
 import RegisterPage from "./Register";
 import ProfilePage from "./Profile";
 import ProductPage from "./ProductPage";
+import CategoryProducts from "./CategoryProducts";
+import Cart from "./Cart";
 
 // Admin Pages
 import AdminDashboard from "./admin/Dashboard";
@@ -35,17 +38,11 @@ import UserManagement from "./admin/UserManagement";
 
 // Home component
 const Home = () => {
-  const [cartItems, setCartItems] = useState<number>(0);
-
-  const addToCart = () => {
-    setCartItems((prev) => prev + 1);
-  };
-
   return (
     <>
-      <Navbar cartItems={cartItems} />
+      <Navbar />
       <Hero />
-      <FeaturedProducts addToCart={addToCart} />
+      <FeaturedProducts addToCart={() => {}} />
       <Categories />
       <Promotions />
       <Footer />
@@ -56,65 +53,72 @@ const Home = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <Router>
-        <div className="app">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
+      <CartProvider>
+        <Router>
+          <div className="app">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+              <Route
+                path="/category/:category"
+                element={<CategoryProducts />}
+              />
+              <Route path="/cart" element={<Cart />} />
 
-            {/* Protected routes */}
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
+              {/* Protected routes */}
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Admin routes */}
-            <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute roles={["admin"]}>
-                  <AdminDashboard
-                    stats={{
-                      userCount: 0,
-                      productCount: 0,
-                      orderCount: 0,
-                      totalRevenue: 0,
-                      lowStockCount: 0,
-                      recentOrders: [],
-                      topProducts: [],
-                    }}
-                  />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/products"
-              element={
-                <ProtectedRoute roles={["admin"]}>
-                  <ProductManagement />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <ProtectedRoute roles={["admin"]}>
-                  <UserManagement />
-                </ProtectedRoute>
-              }
-            />
+              {/* Admin routes */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute roles={["admin"]}>
+                    <AdminDashboard
+                      stats={{
+                        userCount: 0,
+                        productCount: 0,
+                        orderCount: 0,
+                        totalRevenue: 0,
+                        lowStockCount: 0,
+                        recentOrders: [],
+                        topProducts: [],
+                      }}
+                    />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products"
+                element={
+                  <ProtectedRoute roles={["admin"]}>
+                    <ProductManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/users"
+                element={
+                  <ProtectedRoute roles={["admin"]}>
+                    <UserManagement />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Catch-all route - redirect to home */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
-      </Router>
+              {/* Catch-all route - redirect to home */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </Router>
+      </CartProvider>
     </AuthProvider>
   );
 };

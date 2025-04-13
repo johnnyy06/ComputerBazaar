@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getProductById, ProductData } from "../services/productService";
+import { useCart } from "../hooks/useCart";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb";
@@ -16,7 +17,7 @@ const ProductPage: React.FC = () => {
   const [product, setProduct] = useState<ProductData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<number>(0);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -44,24 +45,14 @@ const ProductPage: React.FC = () => {
   }, [id]);
 
   const handleAddToCart = (quantity: number) => {
-    // Add the product to cart logic
-    setCartItems((prevItems) => prevItems + quantity);
-
-    // In a real app, you would typically dispatch an action to add to cart
-    // or call a function from a cart context/provider
+    if (product) {
+      addToCart(product, quantity);
+    }
   };
 
   // Inline styles
   const productPageStyle = {
     paddingBottom: "4rem",
-  };
-
-  const loadingContainerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "50vh",
-    marginTop: "5rem",
   };
 
   const errorContainerStyle = {
@@ -73,10 +64,15 @@ const ProductPage: React.FC = () => {
   if (loading) {
     return (
       <>
-        <Navbar cartItems={cartItems} />
-        <div style={loadingContainerStyle}>
-          <div className="spinner-border text-danger" role="status">
-            <span className="visually-hidden">Loading...</span>
+        <Navbar />
+        <div style={productPageStyle}>
+          <div className="container mt-5 pt-5">
+            {product && (
+              <Breadcrumb
+                category={product.category}
+                productName={product.name}
+              />
+            )}
           </div>
         </div>
       </>
@@ -86,7 +82,7 @@ const ProductPage: React.FC = () => {
   if (error || !product) {
     return (
       <>
-        <Navbar cartItems={cartItems} />
+        <Navbar />
         <div style={errorContainerStyle}>
           <div className="alert alert-danger" role="alert">
             {error || "Produsul nu a fost găsit"}
@@ -102,7 +98,7 @@ const ProductPage: React.FC = () => {
 
   return (
     <>
-      <Navbar cartItems={cartItems} />
+      <Navbar />
       <div style={productPageStyle}>
         <div className="container mt-5 pt-5">
           <Breadcrumb category={product.category} productName={product.name} />

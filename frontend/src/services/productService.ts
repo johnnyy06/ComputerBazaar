@@ -29,7 +29,7 @@ export interface ProductListResponse {
 }
 
 /**
- * Get all products with pagination
+ * Get all products with pagination, optional search keyword, and category filter
  */
 export const getProducts = async (
   page = 1,
@@ -102,6 +102,16 @@ export const deleteProduct = async (productId: string): Promise<{ message: strin
   }
 };
 
+/**
+ * Get products by category
+ */
+export const getProductsByCategory = async (
+  category: string,
+  page = 1
+): Promise<ProductListResponse> => {
+  return getProducts(page, '', category);
+};
+
 // Helper function to handle API errors
 interface ApiError extends Error {
   response?: {
@@ -129,5 +139,6 @@ export default {
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductsByCategory
 };

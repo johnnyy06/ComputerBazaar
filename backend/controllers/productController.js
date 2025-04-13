@@ -10,19 +10,30 @@ export const getProducts = async (req, res) => {
     const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
     
-    const keyword = req.query.keyword
-      ? {
-          name: {
-            $regex: req.query.keyword,
-            $options: 'i',
-          },
-        }
-      : {};
+    // Build filter object
+    const filters = {};
     
-    const category = req.query.category ? { category: req.query.category } : {};
+    // Add keyword filter if provided
+    if (req.query.keyword) {
+      filters.name = {
+        $regex: req.query.keyword,
+        $options: 'i', // case-insensitive
+      };
+    }
     
-    const count = await Product.countDocuments({ ...keyword, ...category });
-    const products = await Product.find({ ...keyword, ...category })
+    // Add category filter if provided
+    if (req.query.category) {
+      filters.category = {
+        $regex: req.query.category,
+        $options: 'i', // case-insensitive
+      };
+    }
+    
+    // Count total products matching filters
+    const count = await Product.countDocuments(filters);
+    
+    // Get products with pagination
+    const products = await Product.find(filters)
       .limit(pageSize)
       .skip(pageSize * (page - 1))
       .sort({ createdAt: -1 });

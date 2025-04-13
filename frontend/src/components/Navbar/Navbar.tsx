@@ -3,13 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./Navbar.module.css";
 import { useAuth } from "../../hooks/useAuth";
+import { useCart } from "../../hooks/useCart";
 
 interface NavbarProps {
-  cartItems: number;
+  cartItems?: number;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ cartItems }) => {
+const Navbar: React.FC<NavbarProps> = () => {
   const { user, logout } = useAuth();
+  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -95,51 +97,51 @@ const Navbar: React.FC<NavbarProps> = ({ cartItems }) => {
                 className={`${styles["dropdown-menu"]} dropdown-menu dropdown-menu-end`}
               >
                 <li key="cpu">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/Procesoare"
                   >
                     Procesoare
-                  </a>
+                  </Link>
                 </li>
                 <li key="video-card">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/Plăci video"
                   >
                     Plăci video
-                  </a>
+                  </Link>
                 </li>
                 <li key="motherboard">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/Placi de bază"
                   >
                     Plăci de bază
-                  </a>
+                  </Link>
                 </li>
                 <li key="power-supply">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/Memorie RAM"
                   >
                     Memorie RAM
-                  </a>
+                  </Link>
                 </li>
                 <li key="storage">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/SSD %26 HDD"
                   >
                     SSD & HDD
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
               <Link
                 className={`${styles["nav-link"]} nav-link`}
-                to="#"
+                to="/category/Periferice"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -151,7 +153,7 @@ const Navbar: React.FC<NavbarProps> = ({ cartItems }) => {
             <li className="nav-item">
               <Link
                 className={`${styles["nav-link"]} nav-link`}
-                to="#"
+                to="/category/Promotii"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -218,9 +220,9 @@ const Navbar: React.FC<NavbarProps> = ({ cartItems }) => {
             className={`btn btn-outline-light d-flex align-items-center justify-content-center ${styles["cart-button"]}`}
           >
             <i className="bi bi-cart"></i>
-            {cartItems > 0 && (
+            {totalItems > 0 && (
               <span className={`badge bg-danger ${styles["cart-badge"]} ms-2`}>
-                {cartItems}
+                {totalItems}
               </span>
             )}
           </Link>

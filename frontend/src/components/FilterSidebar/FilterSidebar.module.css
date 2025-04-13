@@ -1,0 +1,159 @@
+.filterSidebar {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    padding: 20px;
+    height: 100%;
+  }
+  
+  .filterHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filterHeader h3 {
+    font-size: 1.3rem;
+    color: var(--white);
+    margin: 0;
+  }
+  
+  .toggleButton {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .filterContent {
+    margin-bottom: 20px;
+  }
+  
+  .filterSection {
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--secondary-gray);
+    padding-bottom: 20px;
+  }
+  
+  .filterSection:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .filterTitle {
+    font-size: 1.1rem;
+    color: var(--white);
+    margin-bottom: 15px;
+  }
+  
+  .priceInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .inputGroup {
+    display: flex;
+    align-items: center;
+  }
+  
+  .inputGroup label {
+    color: var(--light-gray);
+    margin-right: 10px;
+    width: 50px;
+  }
+  
+  .inputGroup input {
+    width: 80px;
+    padding: 8px;
+    background-color: var(--secondary-gray);
+    border: 1px solid var(--secondary-gray);
+    color: var(--white);
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
+  .inputGroup span {
+    color: var(--light-gray);
+  }
+  
+  .checkboxList {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+  
+  .checkboxList::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .checkboxList::-webkit-scrollbar-track {
+    background: var(--secondary-gray);
+    border-radius: 3px;
+  }
+  
+  .checkboxList::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: 3px;
+  }
+  
+  .checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .checkbox:last-child {
+    margin-bottom: 0;
+  }
+  
+  .checkbox input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-red);
+  }
+  
+  .checkbox label {
+    color: var(--light-gray);
+    cursor: pointer;
+  }
+  
+  .clearButton {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    padding: 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-top: 20px;
+  }
+  
+  .clearButton:hover {
+    color: var(--primary-red);
+  }
+  
+  .clearButton i {
+    margin-right: 5px;
+  }
+  
+  /* Mobile styles */
+  @media (max-width: 767.98px) {
+    .filterSidebar {
+      margin-bottom: 20px;
+    }
+    
+    .filterContent {
+      display: none;
+    }
+    
+    .expanded .filterContent {
+      display: block;
+    }
+  }

@@ -60,7 +60,7 @@ export const deleteUser = async (req, res) => {
 export const getAdminDashboardStats = async (req, res) => {
   try {
     // Count total users
-    const userCount = await User.countDocuments({ role: 'user' });
+    const userCount = await User.countDocuments();
     
     // Count total products
     const productCount = await Product.countDocuments();

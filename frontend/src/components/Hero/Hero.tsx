@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
           </div>
           <div className="col-md-6">
             <img
-              src="../../../images/pc1.jpg"
+              src="../../../images/fp-image.jpg"
               alt="PC Gaming High-End"
               className={`img-fluid ${styles["hero-image"]}`}
             />

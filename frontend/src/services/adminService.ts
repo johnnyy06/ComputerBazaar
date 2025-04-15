@@ -67,13 +67,23 @@ export const deleteUser = async (userId: string): Promise<{ message: string }> =
 /**
  * Get admin dashboard statistics
  */
+// Fetch admin dashboard statistics
 export const getAdminStats = async (): Promise<DashboardStats> => {
   try {
     const response = await api.get<DashboardStats>('/admin/dashboard');
     return response.data;
   } catch (error) {
     console.error('Error fetching admin stats:', error);
-    throw handleApiError(error);
+    // Return default data if API call fails - to avoid breaking the dashboard
+    return {
+      userCount: 0,
+      productCount: 0,
+      orderCount: 0,
+      totalRevenue: 0,
+      lowStockCount: 0,
+      recentOrders: [],
+      topProducts: []
+    };
   }
 };
 

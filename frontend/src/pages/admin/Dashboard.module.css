@@ -1,0 +1,150 @@
+/* Dashboard styles */
+.adminContent {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Stats cards */
+  .statCard {
+    background-color: #222;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid #444;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .statCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .statCardBody {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .statIcon {
+    font-size: 2.5rem;
+    margin-right: 15px;
+    background-color: rgba(255, 0, 0, 0.1);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff0000;
+  }
+  
+  .statNumbers {
+    flex-grow: 1;
+  }
+  
+  .statCount {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+  }
+  
+  .statLabel {
+    color: #aaa;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  .statCardFooter {
+    background-color: #1a1a1a;
+    padding: 10px 20px;
+    border-top: 1px solid #333;
+  }
+  
+  .statCardFooter a {
+    color: #ff0000;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .statCardFooter a:hover {
+    color: #ff3333;
+  }
+  
+  /* Top products list */
+  .topProductsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .topProductItem {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .topProductItem:last-child {
+    border-bottom: none;
+  }
+  
+  .productInfo {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .productName {
+    color: #fff;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  
+  .productPrice {
+    color: #aaa;
+    font-size: 0.85rem;
+  }
+  
+  .productStats {
+    text-align: right;
+  }
+  
+  .rating {
+    margin-bottom: 4px;
+  }
+  
+  .stock {
+    font-size: 0.85rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .adminContent {
+      padding: 15px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .statCard {
+      margin-bottom: 15px;
+    }
+    
+    .statCardBody {
+      padding: 15px;
+    }
+    
+    .statIcon {
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+    }
+    
+    .statCount {
+      font-size: 1.5rem;
+    }
+  }

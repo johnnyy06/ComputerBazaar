@@ -193,3 +193,13 @@ computer-bazaar/
 ├── .gitignore              # Fișiere excluse din git
 ├── package.json            # Scripturi pentru întregul proiect
 └── README.txt              # Documentație
+
+*** Site-ul este responsive
+
+
+******* Componente nefunctionale *********
+
+- butonul "Promotii" si "Oferte speciale" inca nu functioneaza (urmeaza sa fie implementata astfel incat admin-ul sa poate configura promotiile)
+- finalizeaza comanda -> inca nu este implementat feature-ul de comanda, e doar pana la adaugarea in cos
+- butonul "Configureaza PC" e inca nefunctional (urmeaza sa te duca la o fereastra unde sa iti poti configura PC-ul)
+- bara de cautare e inca nefunctionala (urmeaza sa fie implementata)

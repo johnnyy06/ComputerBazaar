@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🖥️ **Computer Bazaar**
 
 O platformă de e-commerce completă pentru vânzarea de componente PC, sisteme desktop, laptop-uri și periferice.
@@ -154,4 +153,3 @@ O platformă de e-commerce completă pentru vânzarea de componente PC, sisteme 
 - Validare input pentru prevenirea atacurilor
 - Securizare rute cu middleware de autentificare
 - Separare permisiuni bazate pe roluri
->>>>>>> 7ab4d7d37cfb9af416d462e945b45d6f1470329d

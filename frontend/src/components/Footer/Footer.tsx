@@ -1,4 +1,6 @@
+// frontend/src/components/Footer/Footer.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./Footer.module.css";
 
@@ -32,19 +34,19 @@ const Footer: React.FC = () => {
             <h5 className="text-white">Informații</h5>
             <ul className={styles["footer-links"] + " list-unstyled"}>
               <li>
-                <a href="#">Despre noi</a>
+                <Link to="/about">Despre noi</Link>
               </li>
               <li>
-                <a href="#">Termeni și condiții</a>
+                <Link to="/terms">Termeni și condiții</Link>
               </li>
               <li>
-                <a href="#">Politica de confidențialitate</a>
+                <Link to="/privacy">Politica de confidențialitate</Link>
               </li>
               <li>
-                <a href="#">Politica de retur</a>
+                <Link to="/return-policy">Politica de retur</Link>
               </li>
               <li>
-                <a href="#">Blog</a>
+                <Link to="/blog">Blog</Link>
               </li>
             </ul>
           </div>
@@ -52,19 +54,19 @@ const Footer: React.FC = () => {
             <h5 className="text-white">Servicii clienți</h5>
             <ul className={styles["footer-links"] + " list-unstyled"}>
               <li>
-                <a href="#">Contul meu</a>
+                <Link to="/profile">Contul meu</Link>
+              </li>
+              {/* <li>
+                <Link to="/orders">Urmărește comanda</Link>
+              </li> */}
+              <li>
+                <Link to="/technical-support">Suport tehnic</Link>
               </li>
               <li>
-                <a href="#">Urmărește comanda</a>
+                <Link to="/warranty">Garanție și service</Link>
               </li>
               <li>
-                <a href="#">Suport tehnic</a>
-              </li>
-              <li>
-                <a href="#">Garanție și service</a>
-              </li>
-              <li>
-                <a href="#">Întrebări frecvente</a>
+                <Link to="/faq">Întrebări frecvente</Link>
               </li>
             </ul>
           </div>
@@ -110,22 +112,22 @@ const Footer: React.FC = () => {
           <div className="col-md-6 text-md-end">
             <div className={styles["payment-methods"]}>
               <img
-                src="../../images/visa.svg"
+                src="/images/visa.svg"
                 alt="Visa"
                 className={styles["payment-icon"]}
               />
               <img
-                src="../../images/mastercard.svg"
+                src="/images/mastercard.svg"
                 alt="Mastercard"
                 className={styles["payment-icon"]}
               />
               <img
-                src="../../images/paypal.svg"
+                src="/images/paypal.svg"
                 alt="PayPal"
                 className={styles["payment-icon"]}
               />
               <img
-                src="../../images/amex.svg"
+                src="/images/amex.svg"
                 alt="American Express"
                 className={styles["payment-icon"]}
               />

@@ -30,6 +30,15 @@ import ProfilePage from "./Profile";
 import ProductPage from "./ProductPage";
 import CategoryProducts from "./CategoryProducts";
 import Cart from "./Cart";
+import AboutPage from "./About";
+import TermsPage from "./Terms";
+import PrivacyPage from "./Privacy";
+import ReturnPolicyPage from "./ReturnPolicy";
+import BlogPage from "./Blog";
+import BlogPostPage from "./BlogPost";
+import TechnicalSupportPage from "./TechnicalSupport";
+import WarrantyAndServicePage from "./WarrantyAndService";
+import FAQPage from "./FAQ";
 
 // Admin Pages
 import AdminDashboard from "./admin/Dashboard";
@@ -66,6 +75,20 @@ const App: React.FC = () => {
                 element={<CategoryProducts />}
               />
               <Route path="/cart" element={<Cart />} />
+
+              {/* Footer Pages */}
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/return-policy" element={<ReturnPolicyPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route
+                path="/technical-support"
+                element={<TechnicalSupportPage />}
+              />
+              <Route path="warranty" element={<WarrantyAndServicePage />} />
+              <Route path="/faq" element={<FAQPage />} />
 
               {/* Protected routes */}
               <Route

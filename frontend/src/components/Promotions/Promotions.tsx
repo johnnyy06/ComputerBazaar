@@ -18,7 +18,7 @@ const Promotions: React.FC = () => {
               </div>
               <div className={styles["promo-image"]}>
                 <img
-                  src="image/placeholder.jpg"
+                  src="../../images/gaming-pc-icon.svg"
                   alt="Gaming PC Deals"
                   className="img-fluid"
                 />
@@ -57,7 +57,7 @@ const Promotions: React.FC = () => {
                   </div>
                   <div className={styles["promo-image"]}>
                     <img
-                      src="https://placehold.co/150x100"
+                      src="../../images/rtx4000.jpg"
                       alt="RTX 4000 Series"
                       className="img-fluid"
                     />

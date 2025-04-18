@@ -56,29 +56,29 @@ const Navbar: React.FC<NavbarProps> = () => {
               <ul
                 className={`${styles["dropdown-menu"]} dropdown-menu dropdown-menu-end`}
               >
-                <li key="desktop-pc">
-                  <a
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
-                  >
-                    Desktop PC
-                  </a>
-                </li>
                 <li key="gaming-pc">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/Gaming PC"
                   >
                     Gaming PC
-                  </a>
+                  </Link>
                 </li>
                 <li key="pc-office">
-                  <a
+                  <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    href="#"
+                    to="/category/PC Office"
                   >
                     PC Office
-                  </a>
+                  </Link>
+                </li>
+                <li key="laptop">
+                  <Link
+                    className={`${styles["dropdown-item"]} dropdown-item`}
+                    to="/category/Laptop"
+                  >
+                    Laptop
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -120,7 +120,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     Plăci de bază
                   </Link>
                 </li>
-                <li key="power-supply">
+                <li key="ram">
                   <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
                     to="/category/Memorie RAM"
@@ -136,16 +136,20 @@ const Navbar: React.FC<NavbarProps> = () => {
                     SSD & HDD
                   </Link>
                 </li>
+                <li key="power-supply">
+                  <Link
+                    className={`${styles["dropdown-item"]} dropdown-item`}
+                    to="/category/Surse"
+                  >
+                    Surse
+                  </Link>
+                </li>
               </ul>
             </li>
             <li className="nav-item">
               <Link
                 className={`${styles["nav-link"]} nav-link`}
                 to="/category/Periferice"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                aria-haspopup="true"
               >
                 Periferice
               </Link>

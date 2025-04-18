@@ -278,8 +278,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
                   <option value="SSD & HDD">SSD & HDD</option>
                   <option value="Surse">Surse</option>
                   <option value="Periferice">Periferice</option>
-                  <option value="Laptopuri">Laptopuri</option>
-                  <option value="Desktop PC">Desktop PC</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Gaming PC">Gaming PC</option>
+                  <option value="PC Office">PC Office</option>
                 </>
               )}
             </select>

@@ -30,13 +30,13 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = ({
       Surse:
         "Surse de alimentare eficiente, certificate și de înaltă calitate pentru PC-ul tău.",
       Periferice:
-        "Tastaturi, mouse-uri, căști, monitoare și alte periferice pentru o experiență completă.",
-      Laptopuri:
-        "Laptopuri puternice pentru gaming, business și utilizare zilnică.",
-      "Desktop PC":
-        "Sisteme desktop preconfigurate pentru diverse nevoi, de la gaming la office.",
-      Promotii:
-        "Produse cu discount și oferte speciale - economisește la achiziția componentelor dorite!",
+        "Tastaturi, mouse-uri, căști, monitoare și alte dispozitive pentru o experiență de utilizare completă. Accesorii esențiale pentru gaming și productivitate.",
+      Laptop:
+        "Laptopuri de ultimă generație pentru gaming, business și utilizare zilnică. Portabilitate și performanță într-un singur dispozitiv.",
+      "Gaming PC":
+        "Sisteme desktop de gaming preconfigurate cu cele mai noi componente. Performanță extremă pentru jocurile tale favorite.",
+      "PC Office":
+        "Calculatoare optimizate pentru mediul de business și productivitate. Soluții fiabile pentru biroul tău.",
     };
 
     return (

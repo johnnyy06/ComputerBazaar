@@ -217,10 +217,79 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
+// @desc    Get product count by category
+// @route   GET /api/products/category-counts
+// @access  Public
+export const getProductCountByCategory = async (req, res) => {
+  try {
+    const categoryCounts = await Product.aggregate([
+      {
+        $group: {
+          _id: '$category',
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    
+    // Convertește rezultatul într-un obiect pentru accesare mai usoara
+    const countsMap = {};
+    categoryCounts.forEach(item => {
+      if (item._id) {
+        countsMap[item._id] = item.count;
+      }
+    });
+    
+    res.json(countsMap);
+  } catch (error) {
+    console.error('Get category counts error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Get recommended products (one from each popular category)
+// @route   GET /api/products/recommended
+// @access  Public
+export const getRecommendedProducts = async (req, res) => {
+  try {
+    // Definește categoriile principale pentru recomandări
+    const mainCategories = [
+      'Gaming PC', 
+      'Procesoare', 
+      'PC Office', 
+      'Periferice'
+    ];
+    
+    // Creăm un array pentru a stoca promisiunile
+    const categoryPromises = mainCategories.map(async (category) => {
+      // Pentru fiecare categorie, găsim un produs
+      // Preferăm produsele cu discount sau marcate ca noi
+      const products = await Product.find({ category })
+        .sort({ discount: -1, isNew: -1, rating: -1 })
+        .limit(1);
+        
+      // Returnăm primul produs găsit sau null
+      return products.length > 0 ? products[0] : null;
+    });
+    
+    // Așteptăm toate promisiunile
+    const recommendedProducts = await Promise.all(categoryPromises);
+    
+    // Filtrăm produsele null (în cazul în care o categorie nu are produse)
+    const filteredProducts = recommendedProducts.filter(product => product !== null);
+    
+    res.json(filteredProducts);
+  } catch (error) {
+    console.error('Get recommended products error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 export default {
   getProducts,
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductCountByCategory,
+  getRecommendedProducts
 };

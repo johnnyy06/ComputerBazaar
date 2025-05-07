@@ -1,5 +1,6 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Link } from "react-router-dom";
 import styles from "./Promotions.module.css";
 
 const Promotions: React.FC = () => {
@@ -14,7 +15,6 @@ const Promotions: React.FC = () => {
               <div className={styles["promo-content"]}>
                 <h3>Reduceri Gaming</h3>
                 <p>Până la 30% reducere la PC-uri și componente de gaming</p>
-                <button className="btn btn-light">Vezi oferta</button>
               </div>
               <div className={styles["promo-image"]}>
                 <img
@@ -51,9 +51,12 @@ const Promotions: React.FC = () => {
                   <div className={styles["promo-content"]}>
                     <h4>Nou! RTX 4000 Series</h4>
                     <p>Cele mai noi plăci video disponibile acum</p>
-                    <button className="btn btn-sm btn-outline-light">
+                    <Link
+                      to="/rtx-4000-series"
+                      className="btn btn-sm btn-outline-light"
+                    >
                       Detalii
-                    </button>
+                    </Link>
                   </div>
                   <div className={styles["promo-image"]}>
                     <img

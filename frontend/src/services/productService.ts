@@ -7,6 +7,9 @@ export interface ProductData {
   _id?: string;
   name: string;
   price: number;
+  oldPrice?: number; // Prețul vechi pentru afișarea discountului
+  discount?: number; // Procentul de discount
+  isNew?: boolean;   // Marker pentru produse noi
   description: string;
   // Updated to handle both legacy string URLs and new Cloudinary image objects
   images: (string | UploadedImage)[];
@@ -134,11 +137,33 @@ const handleApiError = (error: unknown): Error => {
   return new Error('An unknown error occurred');
 };
 
+export const getProductCountByCategory = async (): Promise<{[key: string]: number}> => {
+  try {
+    const response = await api.get<{[key: string]: number}>('/products/category-counts');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product counts by category:', error);
+    return {};
+  }
+};
+
+export const getRecommendedProducts = async (): Promise<ProductData[]> => {
+  try {
+    const response = await api.get<ProductData[]>('/products/recommended');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching recommended products:', error);
+    throw handleApiError(error);
+  }
+};
+
 export default {
   getProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
-  getProductsByCategory
+  getProductsByCategory,
+  getProductCountByCategory,
+  getRecommendedProducts
 };

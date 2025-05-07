@@ -72,8 +72,28 @@ const productSchema = new Schema({
   specifications: {
     type: Map,
     of: Schema.Types.Mixed, // poate contine valori diverse (string, numar, array, obiecte etc.)
+  },
+  isNew: {
+    type: Boolean,
+    default: false
+  },
+  oldPrice: {
+    type: Number
+  },
+  discount: {
+    type: Number,
+    default: 0
   }
 }, { timestamps: true });
+
+productSchema.pre('save', function(next) {
+  if (this.oldPrice && this.price) {
+    this.discount = Math.round(((this.oldPrice - this.price) / this.oldPrice) * 100);
+  } else {
+    this.discount = 0;
+  }
+  next();
+});
 
 const Product = model('Product', productSchema);
 

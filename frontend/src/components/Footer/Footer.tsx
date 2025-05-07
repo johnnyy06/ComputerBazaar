@@ -106,7 +106,7 @@ const Footer: React.FC = () => {
         <div className="row">
           <div className="col-md-6">
             <p className={styles["copyright"] + " mb-0"}>
-              © 2025 ComputerBazzar. Toate drepturile rezervate.
+              © 2025 ComputerBazaar. Toate drepturile rezervate.
             </p>
           </div>
           <div className="col-md-6 text-md-end">

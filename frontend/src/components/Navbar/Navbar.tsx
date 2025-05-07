@@ -115,7 +115,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <li key="motherboard">
                   <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Placi de bază"
+                    to="/category/Plăci de bază"
                   >
                     Plăci de bază
                   </Link>
@@ -123,7 +123,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 <li key="ram">
                   <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Memorie RAM"
+                    to="/category/Memorii RAM"
                   >
                     Memorie RAM
                   </Link>

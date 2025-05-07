@@ -1,0 +1,283 @@
+/* frontend/src/pages/RTX4000Series.module.css */
+
+.seriesHero {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .seriesHeader {
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .seriesHeader h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+  }
+  
+  .seriesSubtitle {
+    font-size: 1.2rem;
+    color: var(--light-gray);
+  }
+  
+  .seriesImage {
+    width: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .seriesImage img {
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .seriesIntro {
+    margin: 3rem 0;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .seriesIntro h2 {
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .seriesIntro h2:after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 3px;
+    background-color: var(--primary-red);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .seriesIntro p {
+    color: var(--light-gray);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  .keyFeatures {
+    margin-bottom: 3rem;
+  }
+  
+  .keyFeatures h3 {
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+  
+  .featureCard {
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 1.5rem;
+    height: 100%;
+    transition: transform 0.3s;
+    border: 1px solid var(--secondary-gray);
+  }
+  
+  .featureCard:hover {
+    transform: translateY(-5px);
+  }
+  
+  .featureIcon {
+    color: var(--primary-red);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .featureCard h4 {
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .featureCard p {
+    color: var(--light-gray);
+    text-align: center;
+  }
+  
+  .modelComparison {
+    margin-bottom: 3rem;
+  }
+  
+  .modelComparison h3 {
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  
+  .modelsSection {
+    margin-bottom: 3rem;
+  }
+  
+  .modelsSection h3 {
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  
+  .modelCard {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--secondary-gray);
+  }
+  
+  .modelImage {
+    background-color: var(--secondary-gray);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .modelInfo {
+    padding: 0 1rem;
+  }
+  
+  .modelInfo h4 {
+    color: var(--white);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modelPrice {
+    color: var(--primary-red);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .modelDescription {
+    color: var(--light-gray);
+    margin-bottom: 1.5rem;
+  }
+  
+  .modelSpecs {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modelSpecs h5 {
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  
+  .specItem {
+    margin-bottom: 0.5rem;
+  }
+  
+  .specName {
+    color: var(--light-gray);
+    margin-right: 0.5rem;
+  }
+  
+  .specValue {
+    color: var(--white);
+    font-weight: 500;
+  }
+  
+  .modelActions {
+    margin-top: 1.5rem;
+  }
+  
+  .techSection {
+    margin-bottom: 3rem;
+  }
+  
+  .techSection h3 {
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  
+  .techCard {
+    background-color: var(--dark-gray);
+    border-radius: 8px;
+    padding: 1.5rem;
+    height: 100%;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--secondary-gray);
+  }
+  
+  .techCard h4 {
+    color: var(--primary-red);
+    margin-bottom: 1rem;
+  }
+  
+  .techCard p {
+    color: var(--light-gray);
+  }
+  
+  .ctaSection {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .ctaSection h3 {
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  
+  .ctaSection p {
+    color: var(--light-gray);
+    max-width: 800px;
+    margin: 0 auto 1.5rem;
+  }
+  
+  .ctaButtons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .seriesHeader h1 {
+      font-size: 2rem;
+    }
+    
+    .seriesIntro h2 {
+      font-size: 1.5rem;
+    }
+    
+    .modelImage {
+      margin-bottom: 1rem;
+    }
+    
+    .modelInfo {
+      padding: 0;
+    }
+    
+    .ctaButtons {
+      flex-direction: column;
+    }
+    
+    .ctaButtons .btn {
+      width: 100%;
+      margin: 0.5rem 0 !important;
+    }
+  }

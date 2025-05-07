@@ -39,6 +39,7 @@ import BlogPostPage from "./BlogPost";
 import TechnicalSupportPage from "./TechnicalSupport";
 import WarrantyAndServicePage from "./WarrantyAndService";
 import FAQPage from "./FAQ";
+import RTX4000Series from "./RTX4000Series";
 
 // Admin Pages
 import AdminDashboard from "./admin/Dashboard";
@@ -51,7 +52,7 @@ const Home = () => {
     <>
       <Navbar />
       <Hero />
-      <FeaturedProducts addToCart={() => {}} />
+      <FeaturedProducts />
       <Categories />
       <Promotions />
       <Footer />
@@ -75,6 +76,7 @@ const App: React.FC = () => {
                 element={<CategoryProducts />}
               />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/rtx-4000-series" element={<RTX4000Series />} />
 
               {/* Footer Pages */}
               <Route path="/about" element={<AboutPage />} />

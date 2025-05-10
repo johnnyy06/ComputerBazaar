@@ -41,8 +41,6 @@ const OrderManagement: React.FC = () => {
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
-  // Removed unused isMobile state
-
   const fetchOrders = React.useCallback(async () => {
     try {
       setLoading(true);
@@ -71,10 +69,7 @@ const OrderManagement: React.FC = () => {
     }
 
     fetchOrders();
-
-    // Handle mobile screen detection
-    // Removed unused mobile screen detection logic
-  }, [user, navigate, currentPage, searchKeyword, fetchOrders]); // Added dependencies to avoid missing dependency warnings
+  }, [user, navigate, currentPage, searchKeyword, fetchOrders]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -307,8 +302,8 @@ const OrderManagement: React.FC = () => {
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
                     style={{
-                      backgroundColor: "#333",
-                      color: "#fff",
+                      backgroundColor: "#ffffff",
+                      color: "#000000",
                       border: "1px solid #555",
                     }}
                   />

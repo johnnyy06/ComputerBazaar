@@ -1,5 +1,6 @@
 // backend/controllers/adminOrderController.js
 import Order from '../models/orderModel.js';
+import User from '../models/userModel.js';
 
 // @desc    Get all orders (admin)
 // @route   GET /api/admin/orders
@@ -8,20 +9,43 @@ export const getAllOrders = async (req, res) => {
   try {
     const page = Number(req.query.pageNumber) || 1;
     const pageSize = 20;
+    const keyword = req.query.keyword;
     
-    const keyword = req.query.keyword
-      ? {
+    let query = {};
+    
+    if (keyword) {
+      // Dacă keyword-ul este un ObjectId valid, căutăm după _id
+      const isObjectId = keyword.match(/^[0-9a-fA-F]{24}$/);
+      
+      if (isObjectId) {
+        query = { _id: keyword };
+      } else {
+        // Mai întâi găsim utilizatorii care se potrivesc cu criteriul de căutare
+        const matchingUsers = await User.find({
           $or: [
-            { _id: { $regex: req.query.keyword, $options: 'i' } },
-            { 'user.email': { $regex: req.query.keyword, $options: 'i' } },
-            { 'user.name': { $regex: req.query.keyword, $options: 'i' } },
+            { name: { $regex: keyword, $options: 'i' } },
+            { email: { $regex: keyword, $options: 'i' } }
           ]
-        }
-      : {};
+        });
+        
+        // Extragem ID-urile utilizatorilor găsiți
+        const userIds = matchingUsers.map(user => user._id);
+        
+        // Căutăm comenzi cu acești utilizatori sau alte criterii
+        query = {
+          $or: [
+            { user: { $in: userIds } },
+            { 'shippingAddress.address': { $regex: keyword, $options: 'i' } },
+            { 'shippingAddress.city': { $regex: keyword, $options: 'i' } },
+            { 'shippingAddress.country': { $regex: keyword, $options: 'i' } },
+          ]
+        };
+      }
+    }
 
-    const count = await Order.countDocuments({ ...keyword });
+    const count = await Order.countDocuments(query);
     
-    const orders = await Order.find({ ...keyword })
+    const orders = await Order.find(query)
       .populate('user', 'name email')
       .sort({ createdAt: -1 })
       .limit(pageSize)

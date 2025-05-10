@@ -28,6 +28,10 @@
   font-weight: 600;
 }
 
+.text-muted {
+  color: var(--light-gray) !important;
+}
+
 .table td {
   vertical-align: middle;
 }

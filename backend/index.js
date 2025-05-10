@@ -29,6 +29,7 @@ import addressRoutes from './routes/address.js';
 import adminRoutes from './routes/admin.js';
 import uploadRoutes from './routes/upload.js';
 import orderRoutes from './routes/orders.js';
+import searchRoutes from './routes/search.js';
 
 // folosire rute
 app.use('/api/auth', authRoutes);
@@ -37,6 +38,7 @@ app.use('/api/users/addresses', addressRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/search', searchRoutes);
 
 // Rută de bază pentru testare API
 app.get('/api', (req, res) => {

@@ -29,6 +29,7 @@ import RegisterPage from "./Register";
 import ProfilePage from "./Profile";
 import ProductPage from "./ProductPage";
 import CategoryProducts from "./CategoryProducts";
+import SearchResults from "./SearchResults";
 import Cart from "./Cart";
 import AboutPage from "./About";
 import TermsPage from "./Terms";
@@ -74,6 +75,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/search" element={<SearchResults />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route
                 path="/category/:category"

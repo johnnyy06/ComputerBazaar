@@ -1,0 +1,76 @@
+/* frontend/src/components/SearchEmptyState/SearchEmptyState.module.css */
+.noKeyword,
+.noResults {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--light-gray);
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.noKeyword i,
+.noResults i {
+  font-size: 4rem;
+  color: var(--primary-red);
+  margin-bottom: 20px;
+}
+
+.noKeyword h2,
+.noResults h3 {
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.noKeyword h2 {
+  font-size: 1.8rem;
+}
+
+.noResults h3 {
+  font-size: 1.5rem;
+}
+
+.suggestions {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--dark-gray);
+  border-radius: 8px;
+}
+
+.suggestions h4 {
+  color: var(--white);
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions li {
+  padding: 5px 0;
+  color: var(--light-gray);
+}
+
+.suggestions li:before {
+  content: "•";
+  color: var(--primary-red);
+  margin-right: 8px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .noKeyword,
+  .noResults {
+    padding: 40px 15px;
+  }
+  
+  .noKeyword h2 {
+    font-size: 1.5rem;
+  }
+  
+  .noResults h3 {
+    font-size: 1.3rem;
+  }
+}

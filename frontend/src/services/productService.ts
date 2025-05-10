@@ -31,6 +31,27 @@ export interface ProductListResponse {
   totalProducts: number;
 }
 
+// Filter options interface for reuse
+export interface FilterOptions {
+  brands: string[];
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  inStock: boolean;
+  attributes?: { [key: string]: string[] };
+}
+
+// Helper function to handle API errors
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      message?: string;
+    };
+    status?: number;
+  };
+}
+
 /**
  * Get all products with pagination, optional search keyword, and category filter
  */

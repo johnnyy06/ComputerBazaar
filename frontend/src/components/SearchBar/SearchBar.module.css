@@ -1,0 +1,123 @@
+/* frontend/src/components/SearchBar/SearchBar.module.css */
+.searchContainer {
+  position: relative;
+  width: 100%;
+}
+
+.searchForm {
+  display: flex;
+  width: 95%;
+}
+
+.searchInput {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: none;
+  border-radius: 5px 0 0 5px;
+  padding: 8px 12px;
+  transition: all 0.3s;
+}
+
+.searchInput:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
+  color: var(--white);
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.searchInput::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.searchButton {
+  border-radius: 0 5px 5px 0;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.suggestionsContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--dark-gray);
+  border: 1px solid var(--secondary-gray);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  margin-top: 5px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.suggestionHeader {
+  padding: 8px 12px;
+  color: var(--light-gray);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--secondary-gray);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.suggestionItem {
+  padding: 10px 12px;
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.suggestionItem:hover,
+.suggestionItem.selected {
+  background-color: var(--secondary-gray);
+}
+
+.suggestionItem i {
+  color: var(--light-gray);
+}
+
+.loadingState {
+  padding: 10px 12px;
+  color: var(--light-gray);
+  display: flex;
+  align-items: center;
+}
+
+/* Scrollbar styles */
+.suggestionsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestionsContainer::-webkit-scrollbar-track {
+  background: var(--secondary-gray);
+}
+
+.suggestionsContainer::-webkit-scrollbar-thumb {
+  background: var(--light-gray);
+  border-radius: 3px;
+}
+
+.suggestionsContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-red);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .searchForm {
+    margin: 10px 0;
+  }
+  
+  .suggestionsContainer {
+    left: 15px;
+    right: 15px;
+  }
+}

@@ -1,0 +1,38 @@
+/* frontend/src/components/SearchHeader/SearchHeader.module.css */
+.searchHeader {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--secondary-gray);
+}
+
+.searchTitle {
+  color: var(--white);
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.categoryFilter {
+  color: var(--light-gray);
+  margin-bottom: 10px;
+}
+
+.categoryFilter a {
+  color: var(--light-gray);
+  text-decoration: none;
+}
+
+.categoryFilter a:hover {
+  color: var(--primary-red);
+}
+
+.searchMeta {
+  color: var(--light-gray);
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .searchTitle {
+    font-size: 1.4rem;
+  }
+}

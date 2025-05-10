@@ -1,4 +1,5 @@
-import React from "react";
+// Corrected Navbar.tsx
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./Navbar.module.css";
@@ -13,6 +14,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   const { user, logout } = useAuth();
   const { totalItems } = useCart();
   const navigate = useNavigate();
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -20,25 +22,54 @@ const Navbar: React.FC<NavbarProps> = () => {
     navigate("/");
   };
 
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+
   return (
-    <nav className={`${styles["navbar"]} navbar navbar-expand-lg fixed-top`}>
+    <nav className={`${styles.navbar} navbar navbar-expand-lg fixed-top`}>
       <div className="container">
         <Link className={styles["navbar-brand"]} to="/">
           <span className="text-danger">Computer</span>
           <span className="text-white">Bazaar</span>
         </Link>
+        
+        {/* Mobile cart icon - visible only on small screens */}
+        <div className="d-flex d-lg-none align-items-center me-2">
+          <Link
+            to="/cart"
+            className={styles.mobileCartBtn}
+            aria-label="Shopping cart"
+          >
+            <i className="bi bi-cart"></i>
+            {totalItems > 0 && (
+              <span className={`badge bg-danger ${styles["cart-badge"]}`}>
+                {totalItems}
+              </span>
+            )}
+          </Link>
+        </div>
+
         <button
-          className="navbar-toggler"
+          className={`navbar-toggler ${styles.navbarToggler}`}
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
+          onClick={handleNavCollapse}
+          aria-controls="navbarNav"
+          aria-expanded={!isNavCollapsed}
+          aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className={styles.togglerIcon}></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+
+        <div 
+          className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`} 
+          id="navbarNav"
+        >
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className={`${styles["nav-link"]} nav-link active`} to="/">
+              <Link 
+                className={`${styles["nav-link"]} nav-link`} 
+                to="/"
+                onClick={() => setIsNavCollapsed(true)}
+              >
                 Acasă
               </Link>
             </li>
@@ -49,33 +80,35 @@ const Navbar: React.FC<NavbarProps> = () => {
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                aria-haspopup="true"
               >
                 Calculatoare
               </Link>
               <ul
-                className={`${styles["dropdown-menu"]} dropdown-menu dropdown-menu-end`}
+                className={`${styles["dropdown-menu"]} dropdown-menu`}
               >
-                <li key="gaming-pc">
+                <li>
                   <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
                     to="/category/Gaming PC"
+                    onClick={() => setIsNavCollapsed(true)}
                   >
                     Gaming PC
                   </Link>
                 </li>
-                <li key="pc-office">
+                <li>
                   <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
                     to="/category/PC Office"
+                    onClick={() => setIsNavCollapsed(true)}
                   >
                     PC Office
                   </Link>
                 </li>
-                <li key="laptop">
+                <li>
                   <Link
                     className={`${styles["dropdown-item"]} dropdown-item`}
                     to="/category/Laptop"
+                    onClick={() => setIsNavCollapsed(true)}
                   >
                     Laptop
                   </Link>
@@ -89,67 +122,30 @@ const Navbar: React.FC<NavbarProps> = () => {
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                aria-haspopup="true"
               >
                 Componente
               </Link>
               <ul
-                className={`${styles["dropdown-menu"]} dropdown-menu dropdown-menu-end`}
+                className={`${styles["dropdown-menu"]} dropdown-menu`}
               >
-                <li key="cpu">
-                  <Link
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Procesoare"
-                  >
-                    Procesoare
-                  </Link>
-                </li>
-                <li key="video-card">
-                  <Link
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Plăci video"
-                  >
-                    Plăci video
-                  </Link>
-                </li>
-                <li key="motherboard">
-                  <Link
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Plăci de bază"
-                  >
-                    Plăci de bază
-                  </Link>
-                </li>
-                <li key="ram">
-                  <Link
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Memorii RAM"
-                  >
-                    Memorie RAM
-                  </Link>
-                </li>
-                <li key="storage">
-                  <Link
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/SSD %26 HDD"
-                  >
-                    SSD & HDD
-                  </Link>
-                </li>
-                <li key="power-supply">
-                  <Link
-                    className={`${styles["dropdown-item"]} dropdown-item`}
-                    to="/category/Surse"
-                  >
-                    Surse
-                  </Link>
-                </li>
+                {["Procesoare", "Plăci video", "Plăci de bază", "Memorii RAM", "SSD & HDD", "Surse"].map((component) => (
+                  <li key={component}>
+                    <Link
+                      className={`${styles["dropdown-item"]} dropdown-item`}
+                      to={`/category/${encodeURIComponent(component)}`}
+                      onClick={() => setIsNavCollapsed(true)}
+                    >
+                      {component}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </li>
             <li className="nav-item">
               <Link
                 className={`${styles["nav-link"]} nav-link`}
                 to="/category/Periferice"
+                onClick={() => setIsNavCollapsed(true)}
               >
                 Periferice
               </Link>
@@ -158,10 +154,7 @@ const Navbar: React.FC<NavbarProps> = () => {
               <Link
                 className={`${styles["nav-link"]} nav-link`}
                 to="/category/Promotii"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                aria-haspopup="true"
+                onClick={() => setIsNavCollapsed(true)}
               >
                 Promoții
               </Link>
@@ -170,6 +163,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             {/* Admin menu - only visible to admins */}
             {user && user.role === "admin" && (
               <li className="nav-item dropdown">
+                
                 <a
                   className={`${styles["nav-link"]} nav-link dropdown-toggle text-warning`}
                   href="#"
@@ -183,6 +177,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <Link
                       className={`${styles["dropdown-item"]} dropdown-item`}
                       to="/admin/products"
+                      onClick={() => setIsNavCollapsed(true)}
                     >
                       Produse
                     </Link>
@@ -191,6 +186,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <Link
                       className={`${styles["dropdown-item"]} dropdown-item`}
                       to="/admin/users"
+                      onClick={() => setIsNavCollapsed(true)}
                     >
                       Utilizatori
                     </Link>
@@ -199,6 +195,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <Link
                       className={`${styles["dropdown-item"]} dropdown-item`}
                       to="/admin/orders"
+                      onClick={() => setIsNavCollapsed(true)}
                     >
                       Comenzi
                     </Link>
@@ -207,34 +204,42 @@ const Navbar: React.FC<NavbarProps> = () => {
               </li>
             )}
           </ul>
-          <form className="d-flex me-3">
+          
+          {/* Search form */}
+          <form className={`d-flex me-lg-3 ${styles.searchForm}`}>
             <input
               className="form-control me-2"
               type="search"
               placeholder="Caută produse..."
+              aria-label="Search"
             />
             <button className="btn btn-danger" type="submit">
-              Caută
+              <i className="bi bi-search d-lg-none"></i>
+              <span className="d-none d-lg-block">Caută</span>
             </button>
           </form>
 
-          {/* Cart button */}
-          <Link
-            to="/cart"
-            className={`btn btn-outline-light d-flex align-items-center justify-content-center ${styles["cart-button"]}`}
-          >
-            <i className="bi bi-cart"></i>
-            {totalItems > 0 && (
-              <span className={`badge bg-danger ${styles["cart-badge"]} ms-2`}>
-                {totalItems}
-              </span>
-            )}
-          </Link>
+          {/* Desktop cart button - hidden on mobile */}
+          <div className="d-none d-lg-block">
+            <Link
+              to="/cart"
+              className={`btn btn-outline-light d-flex align-items-center justify-content-center ${styles["cart-button"]}`}
+              aria-label="Shopping cart"
+            >
+              <i className="bi bi-cart"></i>
+              {totalItems > 0 && (
+                <span className={`badge bg-danger ${styles["cart-badge"]} ms-2`}>
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+          </div>
 
           {/* User menu */}
           <div className={styles["nav-icons"]}>
             {user ? (
               <div className="dropdown">
+                
                 <a
                   href="#"
                   className={`${styles["icon-link"]} dropdown-toggle`}
@@ -260,6 +265,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <Link
                       className={`${styles["dropdown-item"]} dropdown-item`}
                       to="/profile"
+                      onClick={() => setIsNavCollapsed(true)}
                     >
                       Profilul meu
                     </Link>
@@ -268,6 +274,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <Link
                       className={`${styles["dropdown-item"]} dropdown-item`}
                       to="/orders"
+                      onClick={() => setIsNavCollapsed(true)}
                     >
                       Comenzile mele
                     </Link>
@@ -276,6 +283,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <Link
                       className={`${styles["dropdown-item"]} dropdown-item`}
                       to="/favorites"
+                      onClick={() => setIsNavCollapsed(true)}
                     >
                       Favorite
                     </Link>
@@ -286,7 +294,10 @@ const Navbar: React.FC<NavbarProps> = () => {
                   <li>
                     <button
                       className={`${styles["dropdown-item"]} dropdown-item text-danger`}
-                      onClick={handleLogout}
+                      onClick={(e) => {
+                        handleLogout(e);
+                        setIsNavCollapsed(true);
+                      }}
                     >
                       Deconectare
                     </button>
@@ -294,7 +305,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 </ul>
               </div>
             ) : (
-              <Link to="/login" className={styles["icon-link"]}>
+              <Link to="/login" className={styles["icon-link"]} onClick={() => setIsNavCollapsed(true)}>
                 <i className="bi bi-person"></i>
               </Link>
             )}

@@ -1,4 +1,6 @@
-/* frontend/src/pages/admin/ProductManagement.css */
+/* frontend/src/pages/admin/ProductManagement.css - Extended with responsive features */
+
+/* Existing styles */
 .admin-container {
   min-height: calc(100vh - 300px);
 }
@@ -52,7 +54,7 @@
 }
 
 .modal-dialog {
-  max-width: 800px; /* Wider dialog for product form */
+  max-width: 800px;
 }
 
 .modal-content {
@@ -65,7 +67,6 @@
   border-color: var(--secondary-gray);
 }
 
-/* Make modal display correctly */ 
 .modal.show {
   display: block !important;
   padding-right: 17px;
@@ -74,8 +75,6 @@
 .modal-backdrop.show {
   opacity: 0.5;
 }
-
-/* End Modal Fixes */
 
 .pagination .page-item .page-link {
   background-color: var(--dark-gray);
@@ -107,41 +106,135 @@
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: translateY(-10px);
+    opacity: 0;
+    transform: translateY(-10px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Product Images Container in Form */
-.product-images-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
+/* NEW: Responsive Card Styles */
+@media (max-width: 767px) {
+  .admin-content {
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+  }
+
+  .table-responsive {
+    display: none;
+  }
+
+  .card-view {
+    display: block;
+  }
+
+  .product-card {
+    background-color: var(--dark-gray);
+    border: 1px solid var(--secondary-gray);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--secondary-gray);
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .product-image-container {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    background-color: var(--secondary-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-name {
+    font-weight: 600;
+    color: var(--white);
+    flex: 1;
+  }
+
+  .product-info {
+    padding: 1rem;
+    flex-grow: 1;
+  }
+
+  .product-info > div {
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-info > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .product-actions {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--secondary-gray);
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .product-actions .btn-group {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .product-actions .btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
 }
 
-.product-image-item {
-  width: 100px;
-  position: relative;
+@media (max-width: 575px) {
+  .admin-content h2 {
+    font-size: 1.25rem;
+  }
+
+  .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .btn-success {
+    width: 100%;
+  }
+
+  .product-actions .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
 }
 
-.product-image-preview {
-  width: 100%;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--secondary-gray);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.product-image-preview img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+/* Desktop-only styles */
+@media (min-width: 768px) {
+  .card-view {
+    display: none;
+  }
+  
+  .table-responsive {
+    display: block;
+  }
 }

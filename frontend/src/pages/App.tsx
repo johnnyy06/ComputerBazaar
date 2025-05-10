@@ -40,11 +40,15 @@ import TechnicalSupportPage from "./TechnicalSupport";
 import WarrantyAndServicePage from "./WarrantyAndService";
 import FAQPage from "./FAQ";
 import RTX4000Series from "./RTX4000Series";
+import Checkout from "./Checkout";
+import OrderDetails from "./OrderDetails";
+import Orders from "./Orders";
 
 // Admin Pages
 import AdminDashboard from "./admin/Dashboard";
 import ProductManagement from "./admin/ProductManagement";
 import UserManagement from "./admin/UserManagement";
+import OrderManagement from "./admin/OrderManagement";
 
 // Home component
 const Home = () => {
@@ -76,6 +80,31 @@ const App: React.FC = () => {
                 element={<CategoryProducts />}
               />
               <Route path="/cart" element={<Cart />} />
+              <Route
+                path="/checkout"
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order/:id"
+                element={
+                  <ProtectedRoute>
+                    <OrderDetails />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <ProtectedRoute>
+                    <Orders />
+                  </ProtectedRoute>
+                }
+              />
+
               <Route path="/rtx-4000-series" element={<RTX4000Series />} />
 
               {/* Footer Pages */}
@@ -124,6 +153,14 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute roles={["admin"]}>
                     <UserManagement />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <ProtectedRoute roles={["admin"]}>
+                    <OrderManagement />
                   </ProtectedRoute>
                 }
               />

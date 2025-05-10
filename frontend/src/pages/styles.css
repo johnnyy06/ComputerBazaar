@@ -72,3 +72,84 @@
       margin-bottom: 20px;
     }
   }
+
+  /* Styles for order-related pages */
+
+.checkout-section, 
+.order-section {
+  background-color: var(--dark-gray);
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  color: var(--white);
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--secondary-gray);
+}
+
+/* Loading animation */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.loading-spinner p {
+  margin-top: 15px;
+  color: var(--white);
+}
+
+/* Status badges */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-success {
+  background-color: rgba(25, 135, 84, 0.2);
+  color: #20c997;
+  border: 1px solid rgba(25, 135, 84, 0.5);
+}
+
+.status-warning {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.5);
+}
+
+.status-secondary {
+  background-color: rgba(108, 117, 125, 0.2);
+  color: #adb5bd;
+  border: 1px solid rgba(108, 117, 125, 0.5);
+}
+
+/* Page titles */
+.page-title {
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+/* Error & success messages */
+.alert-message {
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

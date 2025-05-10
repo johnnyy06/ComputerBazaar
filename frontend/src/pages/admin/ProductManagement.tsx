@@ -53,7 +53,6 @@ const ProductManagement: React.FC = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    // Check if user is admin
     if (!user || user.role !== "admin") {
       navigate("/login");
       return;
@@ -73,7 +72,6 @@ const ProductManagement: React.FC = () => {
   };
 
   const handleProductSaved = () => {
-    // Close form and refresh product list
     handleCloseProductForm();
     fetchProducts();
   };
@@ -91,8 +89,6 @@ const ProductManagement: React.FC = () => {
       await deleteProduct(productToDelete);
       setShowDeleteModal(false);
       setProductToDelete(null);
-
-      // Refresh product list
       fetchProducts();
     } catch (err) {
       console.error("Error deleting product:", err);
@@ -105,6 +101,152 @@ const ProductManagement: React.FC = () => {
       setDeleteLoading(false);
     }
   };
+
+  const getProductImage = (product: ProductData) => {
+    if (product.images && product.images.length > 0) {
+      if (typeof product.images[0] === "string") {
+        return product.images[0];
+      } else if (
+        product.images[0] &&
+        typeof product.images[0] === "object" &&
+        "url" in product.images[0]
+      ) {
+        return product.images[0].url;
+      }
+    }
+    return undefined;
+  };
+
+  const renderProductMobileCard = (product: ProductData) => (
+    <div key={product._id} className="product-card">
+      <div className="product-header">
+        <div className="product-image-container">
+          {getProductImage(product) ? (
+            <img
+              src={getProductImage(product)}
+              alt={product.name}
+              width="60"
+              height="60"
+              style={{ objectFit: "contain" }}
+            />
+          ) : (
+            <span className="text-white-50">No Image</span>
+          )}
+        </div>
+        <div className="product-name">{product.name}</div>
+      </div>
+      <div className="product-info">
+        <div>
+          <span>Categorie:</span>
+          <span>{product.category}</span>
+        </div>
+        <div>
+          <span>Preț:</span>
+          <span>{product.price} Lei</span>
+        </div>
+        <div>
+          <span>Stoc:</span>
+          <span
+            className={`badge ${
+              product.stock > 10
+                ? "bg-success"
+                : product.stock > 0
+                ? "bg-warning"
+                : "bg-danger"
+            }`}
+          >
+            {product.stock} buc
+          </span>
+        </div>
+      </div>
+      <div className="product-actions">
+        <div className="btn-group">
+          <button
+            className="btn btn-sm btn-primary"
+            onClick={() => handleOpenProductForm(product)}
+          >
+            <i className="bi bi-pencil me-1"></i>
+            Editează
+          </button>
+          <button
+            className="btn btn-sm btn-danger"
+            onClick={() => product._id && handleDeleteClick(product._id)}
+          >
+            <i className="bi bi-trash me-1"></i>
+            Șterge
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderProductTable = () => (
+    <table className="table table-dark table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Imagine</th>
+          <th>Nume</th>
+          <th>Categorie</th>
+          <th>Preț</th>
+          <th>Stoc</th>
+          <th>Acțiuni</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.map((product) => (
+          <tr key={product._id}>
+            <td>{product._id?.substring(0, 8)}...</td>
+            <td>
+              {getProductImage(product) ? (
+                <img
+                  src={getProductImage(product)}
+                  alt={product.name}
+                  width="50"
+                  height="50"
+                  className="product-thumbnail"
+                />
+              ) : (
+                <div className="no-image">No Image</div>
+              )}
+            </td>
+            <td>{product.name}</td>
+            <td>{product.category}</td>
+            <td>{product.price} Lei</td>
+            <td>
+              <span
+                className={`badge ${
+                  product.stock > 10
+                    ? "bg-success"
+                    : product.stock > 0
+                    ? "bg-warning"
+                    : "bg-danger"
+                }`}
+              >
+                {product.stock} buc
+              </span>
+            </td>
+            <td>
+              <div className="btn-group">
+                <button
+                  className="btn btn-sm btn-primary"
+                  onClick={() => handleOpenProductForm(product)}
+                >
+                  <i className="bi bi-pencil"></i>
+                </button>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => product._id && handleDeleteClick(product._id)}
+                >
+                  <i className="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 
   return (
     <>
@@ -123,7 +265,8 @@ const ProductManagement: React.FC = () => {
                   onClick={() => handleOpenProductForm()}
                 >
                   <i className="bi bi-plus-circle me-2"></i>
-                  Adaugă produs nou
+                  <span className="d-none d-sm-inline">Adaugă produs nou</span>
+                  <span className="d-sm-none">Adaugă produs</span>
                 </button>
               </div>
 
@@ -147,87 +290,17 @@ const ProductManagement: React.FC = () => {
                       de mai sus.
                     </div>
                   ) : (
-                    <div className="table-responsive">
-                      <table className="table table-dark table-hover">
-                        <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Imagine</th>
-                            <th>Nume</th>
-                            <th>Categorie</th>
-                            <th>Preț</th>
-                            <th>Stoc</th>
-                            <th>Acțiuni</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {products.map((product) => (
-                            <tr key={product._id}>
-                              <td>{product._id?.substring(0, 8)}...</td>
-                              <td>
-                                {product.images && product.images.length > 0 ? (
-                                  <img
-                                    src={
-                                      typeof product.images[0] === "string"
-                                        ? product.images[0]
-                                        : product.images[0] &&
-                                          typeof product.images[0] ===
-                                            "object" &&
-                                          "url" in product.images[0]
-                                        ? product.images[0].url
-                                        : undefined
-                                    }
-                                    alt={product.name}
-                                    width="50"
-                                    height="50"
-                                    className="product-thumbnail"
-                                  />
-                                ) : (
-                                  <div className="no-image">No Image</div>
-                                )}
-                              </td>
-                              <td>{product.name}</td>
-                              <td>{product.category}</td>
-                              <td>{product.price} Lei</td>
-                              <td>
-                                <span
-                                  className={`badge ${
-                                    product.stock > 10
-                                      ? "bg-success"
-                                      : product.stock > 0
-                                      ? "bg-warning"
-                                      : "bg-danger"
-                                  }`}
-                                >
-                                  {product.stock} buc
-                                </span>
-                              </td>
-                              <td>
-                                <div className="btn-group">
-                                  <button
-                                    className="btn btn-sm btn-primary"
-                                    onClick={() =>
-                                      handleOpenProductForm(product)
-                                    }
-                                  >
-                                    <i className="bi bi-pencil"></i>
-                                  </button>
-                                  <button
-                                    className="btn btn-sm btn-danger"
-                                    onClick={() =>
-                                      product._id &&
-                                      handleDeleteClick(product._id)
-                                    }
-                                  >
-                                    <i className="bi bi-trash"></i>
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                    <>
+                      {/* Mobile Card View */}
+                      <div className="card-view">
+                        {products.map(renderProductMobileCard)}
+                      </div>
+
+                      {/* Desktop Table View */}
+                      <div className="table-responsive">
+                        {renderProductTable()}
+                      </div>
+                    </>
                   )}
 
                   {/* Pagination */}
@@ -287,6 +360,7 @@ const ProductManagement: React.FC = () => {
         </div>
       </div>
 
+      {/* Modal and Delete Modal code remains the same */}
       {showProductForm && (
         <>
           <div className="modal fade show" style={{ display: "block" }}>
@@ -316,7 +390,7 @@ const ProductManagement: React.FC = () => {
         </>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Modal */}
       {showDeleteModal && (
         <>
           <div className="modal fade show" style={{ display: "block" }}>

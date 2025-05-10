@@ -1,0 +1,12 @@
+.orderHeader {
+    margin-bottom: 2rem;
+  }
+  
+  .orderHeader h1 {
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  
+  .orderDate {
+    color: var(--light-gray);
+  }

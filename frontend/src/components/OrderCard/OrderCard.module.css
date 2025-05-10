@@ -1,0 +1,119 @@
+.orderCard {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--secondary-gray);
+    margin-bottom: 25px;
+    transition: transform 0.2s;
+  }
+  
+  .orderCard:hover {
+    transform: translateY(-3px);
+  }
+  
+  .orderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    border-bottom: 1px solid var(--secondary-gray);
+  }
+  
+  .orderNumber {
+    color: var(--white);
+    margin-bottom: 5px;
+  }
+  
+  .orderDate {
+    color: var(--light-gray);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+  
+  .orderStatus {
+    padding-left: 15px;
+  }
+  
+  .orderItemsList {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--secondary-gray);
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .orderItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .orderItem:last-child {
+    margin-bottom: 0;
+  }
+  
+  .itemImage {
+    width: 60px;
+    height: 60px;
+    background-color: var(--secondary-gray);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .itemImage img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .itemDetails {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .itemName {
+    color: var(--white);
+    margin-bottom: 5px;
+  }
+  
+  .itemQty {
+    color: var(--light-gray);
+    font-size: 0.9rem;
+  }
+  
+  .orderFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+  }
+  
+  .orderTotal {
+    color: var(--light-gray);
+  }
+  
+  .totalAmount {
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-left: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .orderHeader,
+    .orderFooter {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .orderStatus {
+      padding-left: 0;
+    }
+    
+    .orderFooter .btn {
+      width: 100%;
+    }
+  }

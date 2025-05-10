@@ -1,0 +1,18 @@
+.orderSection {
+    background-color: var(--dark-gray);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+  }
+  
+  .sectionTitle {
+    color: var(--white);
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--secondary-gray);
+  }
+  
+  .statusBadge {
+    margin-top: 10px;
+  }

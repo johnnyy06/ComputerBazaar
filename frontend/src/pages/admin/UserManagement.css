@@ -1,40 +1,162 @@
-/* frontend/src/pages/admin/UserManagement.css */
+/* frontend/src/pages/admin/UserManagement.css - Extended with responsive features */
+
+/* Existing styles */
 .current-user-row {
-    background-color: rgba(13, 110, 253, 0.1) !important;
+  background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.table button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--secondary-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: bold;
+}
+
+.btn-group .btn {
+  margin-right: 3px;
+}
+
+.alert {
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .table button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--secondary-gray);
+}
+
+/* NEW: Responsive Card Styles */
+@media (max-width: 767px) {
+  .admin-content {
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+  }
+
+  .table-responsive {
+    display: none;
+  }
+
+  .card-view {
+    display: block;
+  }
+
+  .user-card {
+    background-color: var(--dark-gray);
+    border: 1px solid var(--secondary-gray);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--secondary-gray);
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .user-name {
+    font-weight: 600;
     color: var(--white);
-    font-weight: bold;
+    flex: 1;
+  }
+
+  .user-info {
+    padding: 1rem;
+    flex-grow: 1;
+  }
+
+  .user-info > div {
+    margin-bottom: 0.5rem;
+  }
+
+  .user-info > div:last-child {
+    margin-bottom: 0;
+  }
+
+  .user-actions {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--secondary-gray);
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  .user-actions .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* Status badges */
+  .status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    display: inline-block;
+  }
+
+  .status-badge.admin {
+    background-color: var(--primary-red);
+    color: white;
+  }
+
+  .status-badge.user {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .status-badge.guest {
+    background-color: var(--secondary-gray);
+    color: white;
+  }
+}
+
+@media (max-width: 575px) {
+  .admin-content h2 {
+    font-size: 1.25rem;
+  }
+
+  .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .user-actions .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Desktop-only styles */
+@media (min-width: 768px) {
+  .card-view {
+    display: none;
   }
   
-  .btn-group .btn {
-    margin-right: 3px;
+  .table-responsive {
+    display: block;
   }
-  
-  .alert {
-    animation: fadeIn 0.3s;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}

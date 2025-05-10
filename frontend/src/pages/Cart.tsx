@@ -187,9 +187,22 @@ const Cart: React.FC = () => {
                   <span>{formatPrice(totalPrice)} Lei</span>
                 </div>
 
-                <button className="btn btn-danger btn-lg w-100 mt-3">
+                <Link
+                  to="/checkout"
+                  className="btn btn-danger btn-lg w-100 mt-3"
+                  onClick={(e) => {
+                    // Prevent navigation if cart is empty
+                    if (cartItems.length === 0) {
+                      e.preventDefault();
+                    }
+                  }}
+                  style={{
+                    opacity: cartItems.length === 0 ? 0.6 : 1,
+                    cursor: cartItems.length === 0 ? "not-allowed" : "pointer",
+                  }}
+                >
                   Finalizează comanda
-                </button>
+                </Link>
 
                 <div className={styles.secureCheckout}>
                   <i className="bi bi-shield-lock me-2"></i>

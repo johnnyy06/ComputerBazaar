@@ -1,14 +1,21 @@
-// frontend/src/pages/CategoryProducts.tsx
+// frontend/src/pages/CategoryProducts.tsx (Fixed)
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getProducts, ProductData } from "../services/productService";
+import {
+  getProductsWithFilters,
+  getFilterOptions,
+  ProductData,
+  FilterOptions,
+  FilterOptionsResponse,
+} from "../services/productService";
 import { useCart } from "../hooks/useCart";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import CategoryHeader from "../components/CategoryHeader/CategoryHeader";
 import ProductGrid from "../components/ProductGrid/ProductGrid";
 import Pagination from "../components/Pagination/Pagination";
-// import FilterSidebar from "../components/FilterSidebar/FilterSidebar";
+import FilterSidebar from "../components/FilterSidebar/FilterSidebar";
+import FilterModal from "../components/FilterModal/FilterModal";
 
 const CategoryProducts: React.FC = () => {
   const { category } = useParams<{ category: string }>();
@@ -20,14 +27,55 @@ const CategoryProducts: React.FC = () => {
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const { addToCart } = useCart();
 
+  // Filter states
+  const [filterOptions, setFilterOptions] = useState<FilterOptionsResponse>({
+    brands: [],
+    priceRange: { minPrice: 0, maxPrice: 0 },
+    attributes: {},
+  });
+
+  // Initialize currentFilters properly
+  const [currentFilters, setCurrentFilters] = useState<FilterOptions>({
+    brands: [],
+    priceRange: { min: 0, max: 0 },
+    inStock: false,
+    sortBy: "relevance",
+  });
+
+  // UI states
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [sortBy, setSortBy] = useState("relevance");
+
   // Constants for pagination
   const ITEMS_PER_PAGE = 12;
 
-  // For future filter implementation
-  // const [availableBrands, setAvailableBrands] = useState<string[]>([]);
-  // const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({ min: 0, max: 0 });
-  // const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]);
+  // Fetch filter options when category changes
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const decodedCategory = category ? decodeURIComponent(category) : "";
+        const options = await getFilterOptions(decodedCategory);
+        setFilterOptions(options);
 
+        // Set initial price range when filter options are fetched
+        setCurrentFilters((prev) => ({
+          ...prev,
+          priceRange: {
+            min: options.priceRange.minPrice,
+            max: options.priceRange.maxPrice,
+          },
+        }));
+      } catch (err) {
+        console.error("Error fetching filter options:", err);
+      }
+    };
+
+    if (category) {
+      fetchFilterOptions();
+    }
+  }, [category]);
+
+  // Fetch products whenever filters or sort changes
   useEffect(() => {
     const fetchProductsByCategory = async () => {
       try {
@@ -35,26 +83,22 @@ const CategoryProducts: React.FC = () => {
         setError(null);
         const decodedCategory = category ? decodeURIComponent(category) : "";
 
-        const result = await getProducts(currentPage, "", decodedCategory);
+        // Create a proper filter object with sortBy
+        const filtersWithSort: FilterOptions = {
+          ...currentFilters,
+          sortBy: sortBy,
+        };
+
+        const result = await getProductsWithFilters(
+          currentPage,
+          "",
+          decodedCategory,
+          filtersWithSort
+        );
+
         setProducts(result.products);
         setTotalPages(result.pages);
         setTotalProducts(result.totalProducts);
-
-        // For future filter implementation
-        /*
-        // Extract unique brands
-        const brands = Array.from(new Set(result.products.map(product => product.brand)));
-        setAvailableBrands(brands);
-        
-        // Find min and max prices
-        let minPrice = Number.MAX_SAFE_INTEGER;
-        let maxPrice = 0;
-        result.products.forEach(product => {
-          if (product.price < minPrice) minPrice = product.price;
-          if (product.price > maxPrice) maxPrice = product.price;
-        });
-        setPriceRange({ min: minPrice, max: maxPrice });
-        */
       } catch (err) {
         console.error("Error fetching products:", err);
         if (err instanceof Error) {
@@ -70,73 +114,35 @@ const CategoryProducts: React.FC = () => {
     };
 
     fetchProductsByCategory();
-    // Reset to first page when category changes
-    setCurrentPage(1);
-  }, [category, currentPage]);
-
-  // Fetch products when page changes
-  useEffect(() => {
-    if (category) {
-      const fetchPage = async () => {
-        try {
-          setLoading(true);
-          const decodedCategory = decodeURIComponent(category);
-          const result = await getProducts(currentPage, "", decodedCategory);
-          setProducts(result.products);
-        } catch (err) {
-          console.error("Error fetching page:", err);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchPage();
-    }
-  }, [currentPage, category]);
+  }, [category, currentPage, currentFilters, sortBy]);
 
   const handleAddToCart = (productId: string) => {
     const product = products.find((p) => p._id === productId);
     if (product) {
       addToCart(product, 1);
-      // Could add notification/toast here
     }
   };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top when changing pages
     window.scrollTo(0, 0);
   };
 
-  // For future filter implementation
-  /*
-  const handleFilterChange = (filters: any) => {
-    // Apply filters to products
-    let filtered = [...products];
-    
-    // Filter by brand
-    if (filters.brands && filters.brands.length > 0) {
-      filtered = filtered.filter(product => 
-        filters.brands.includes(product.brand)
-      );
-    }
-    
-    // Filter by price
-    filtered = filtered.filter(product => 
-      product.price >= filters.priceRange.min && 
-      product.price <= filters.priceRange.max
-    );
-    
-    // Filter by stock
-    if (filters.inStock) {
-      filtered = filtered.filter(product => product.stock > 0);
-    }
-    
-    // Filter by attributes (future implementation)
-    
-    setFilteredProducts(filtered);
+  const handleFilterChange = (filters: FilterOptions) => {
+    // Reset to first page when filters change
+    setCurrentPage(1);
+
+    // Update current filters
+    setCurrentFilters((prevFilters) => ({
+      ...filters,
+      sortBy: prevFilters.sortBy, // Keep the current sortBy value
+    }));
   };
-  */
+
+  const handleSortChange = (newSort: string) => {
+    setSortBy(newSort);
+    setCurrentPage(1); // Reset to first page when sort changes
+  };
 
   const getCategoryTitle = () => {
     return category ? decodeURIComponent(category) : "Toate produsele";
@@ -152,28 +158,60 @@ const CategoryProducts: React.FC = () => {
           loading={loading}
         />
 
+        {/* Sort and Filter Controls */}
+        <div className="row mb-4">
+          <div className="col-md-6">
+            <button
+              className="btn btn-outline-light me-2 d-md-none"
+              onClick={() => setShowMobileFilter(true)}
+            >
+              <i className="bi bi-funnel me-2"></i>Filtre
+            </button>
+          </div>
+          <div className="col-md-6">
+            <div className="d-flex justify-content-end">
+              <select
+                className="form-select w-auto"
+                style={{
+                  backgroundColor: "#ffffff",
+                  color: "#000000",
+                  border: "1px solid #555",
+                }}
+                value={sortBy}
+                onChange={(e) => handleSortChange(e.target.value)}
+              >
+                <option value="relevance">Sortare: Relevanță</option>
+                <option value="price_asc">Preț: crescător</option>
+                <option value="price_desc">Preț: descrescător</option>
+                <option value="name_asc">Nume: A-Z</option>
+                <option value="name_desc">Nume: Z-A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div className="row">
-          {/* Uncomment for future filter implementation 
-          <div className="col-lg-3 col-md-4 mb-4">
+          {/* Desktop Filter Sidebar */}
+          <div className="col-lg-3 col-md-4 mb-4 d-none d-md-block">
             <FilterSidebar
-              availableBrands={availableBrands}
-              minPrice={priceRange.min}
-              maxPrice={priceRange.max}
+              availableBrands={filterOptions.brands}
+              minPrice={filterOptions.priceRange.minPrice}
+              maxPrice={filterOptions.priceRange.maxPrice}
               onFilterChange={handleFilterChange}
+              attributes={filterOptions.attributes}
+              currentFilters={currentFilters}
             />
           </div>
-          */}
 
-          <div className="col-lg-12">
-            {" "}
-            {/* Change to col-lg-9 col-md-8 when filters are enabled */}
+          <div className="col-lg-9 col-md-8">
             <ProductGrid
-              products={products} // Use filteredProducts when filters are enabled
+              products={products}
               onAddToCart={handleAddToCart}
               loading={loading}
               error={error}
               emptyMessage={`Nu am găsit produse în categoria "${getCategoryTitle()}". Vă rugăm să reveniți mai târziu sau să alegeți altă categorie.`}
             />
+
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -185,6 +223,19 @@ const CategoryProducts: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Filter Modal */}
+      <FilterModal
+        show={showMobileFilter}
+        onClose={() => setShowMobileFilter(false)}
+        onApply={handleFilterChange}
+        availableBrands={filterOptions.brands}
+        minPrice={filterOptions.priceRange.minPrice}
+        maxPrice={filterOptions.priceRange.maxPrice}
+        attributes={filterOptions.attributes}
+        currentFilters={currentFilters}
+      />
+
       <Footer />
     </>
   );

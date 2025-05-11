@@ -40,7 +40,19 @@ export interface FilterOptions {
   };
   inStock: boolean;
   attributes?: { [key: string]: string[] };
+  sortBy?: string;
 }
+
+export interface FilterOptionsResponse {
+  brands: string[];
+  priceRange: {
+    minPrice: number;
+    maxPrice: number;
+  };
+  attributes: { [key: string]: string[] };
+}
+
+
 
 // Helper function to handle API errors
 interface ApiError extends Error {
@@ -67,6 +79,64 @@ export const getProducts = async (
     return response.data;
   } catch (error) {
     console.error('Error fetching products:', error);
+    throw handleApiError(error);
+  }
+};
+
+/**
+ * Get filter options for a category
+ */
+export const getFilterOptions = async (category?: string): Promise<FilterOptionsResponse> => {
+  try {
+    const response = await api.get<FilterOptionsResponse>('/products/filter-options', {
+      params: category ? { category } : {},
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching filter options:', error);
+    throw handleApiError(error);
+  }
+};
+
+/**
+ * Get products with filters
+ */
+export const getProductsWithFilters = async (
+  page = 1,
+  keyword = '',
+  category = '',
+  filters?: FilterOptions
+): Promise<ProductListResponse> => {
+  try {
+    const params: Record<string, string | number | string[]> = {
+      pageNumber: page,
+      keyword,
+      category,
+    };
+
+    if (filters) {
+      if (filters.brands && filters.brands.length > 0) {
+        params.brands = filters.brands;
+      }
+      if (filters.priceRange) {
+        params.minPrice = filters.priceRange.min;
+        params.maxPrice = filters.priceRange.max;
+      }
+      if (filters.inStock) {
+        params.inStock = 'true';
+      }
+      if (filters.attributes && Object.keys(filters.attributes).length > 0) {
+        params.attributes = JSON.stringify(filters.attributes);
+      }
+      if (filters.sortBy) {
+        params.sortBy = filters.sortBy;
+      }
+    }
+
+    const response = await api.get<ProductListResponse>('/products', { params });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching products with filters:', error);
     throw handleApiError(error);
   }
 };

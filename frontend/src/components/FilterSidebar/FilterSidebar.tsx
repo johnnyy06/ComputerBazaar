@@ -1,19 +1,7 @@
-// frontend/src/components/FilterSidebar/FilterSidebar.tsx
-import React, { useState } from "react";
+// frontend/src/components/FilterSidebar/FilterSidebar.tsx (Fixed)
+import React, { useState, useEffect } from "react";
 import styles from "./FilterSidebar.module.css";
-
-// Define filter options types
-interface PriceRange {
-  min: number;
-  max: number;
-}
-
-interface FilterOptions {
-  brands: string[];
-  priceRange: PriceRange;
-  inStock: boolean;
-  attributes?: { [key: string]: string[] };
-}
+import { FilterOptions } from "../../services/productService";
 
 interface FilterSidebarProps {
   availableBrands: string[];
@@ -22,6 +10,7 @@ interface FilterSidebarProps {
   onFilterChange: (filters: FilterOptions) => void;
   attributes?: { [key: string]: string[] };
   className?: string;
+  currentFilters?: FilterOptions;
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -31,10 +20,11 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onFilterChange,
   attributes = {},
   className = "",
+  currentFilters,
 }) => {
-  // Initialize filter state
+  // Initialize state from currentFilters when available
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<PriceRange>({
+  const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({
     min: minPrice,
     max: maxPrice,
   });
@@ -44,60 +34,82 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   }>({});
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
+  // Update local state when currentFilters or price range changes
+  useEffect(() => {
+    if (currentFilters) {
+      setSelectedBrands(currentFilters.brands || []);
+      setShowOnlyInStock(currentFilters.inStock || false);
+      setSelectedAttributes(currentFilters.attributes || {});
+
+      // Update price range only if currentFilters has valid values
+      if (currentFilters.priceRange) {
+        setPriceRange({
+          min: currentFilters.priceRange.min,
+          max: currentFilters.priceRange.max,
+        });
+      }
+    }
+  }, [currentFilters]);
+
+  // Update price range when min/max props change
+  useEffect(() => {
+    setPriceRange({
+      min: currentFilters?.priceRange?.min || minPrice,
+      max: currentFilters?.priceRange?.max || maxPrice,
+    });
+  }, [minPrice, maxPrice, currentFilters]);
+
   // Handle brand selection
   const handleBrandChange = (brand: string) => {
-    setSelectedBrands((prevBrands) => {
-      const newBrands = prevBrands.includes(brand)
-        ? prevBrands.filter((b) => b !== brand)
-        : [...prevBrands, brand];
+    const newBrands = selectedBrands.includes(brand)
+      ? selectedBrands.filter((b) => b !== brand)
+      : [...selectedBrands, brand];
 
-      // Update filters
-      updateFilters({ brands: newBrands });
-      return newBrands;
-    });
+    setSelectedBrands(newBrands);
+    updateFilters({ brands: newBrands });
   };
 
   // Handle price range change
   const handlePriceChange = (type: "min" | "max", value: number) => {
-    setPriceRange((prev) => {
-      const newRange = { ...prev, [type]: value };
+    const newRange = { ...priceRange, [type]: value };
+    setPriceRange(newRange);
 
-      // Update filters
+    // Debounce price updates
+    const timeoutId = setTimeout(() => {
       updateFilters({ priceRange: newRange });
-      return newRange;
-    });
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
   };
 
   // Handle stock filter change
   const handleInStockChange = (checked: boolean) => {
     setShowOnlyInStock(checked);
-
-    // Update filters
     updateFilters({ inStock: checked });
   };
 
   // Handle attribute selection
   const handleAttributeChange = (attribute: string, value: string) => {
-    setSelectedAttributes((prev) => {
-      const currentValues = prev[attribute] || [];
-      const newValues = currentValues.includes(value)
-        ? currentValues.filter((v) => v !== value)
-        : [...currentValues, value];
+    const currentValues = selectedAttributes[attribute] || [];
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((v) => v !== value)
+      : [...currentValues, value];
 
-      const newAttributes = {
-        ...prev,
-        [attribute]: newValues,
-      };
+    const newAttributes = {
+      ...selectedAttributes,
+      [attribute]: newValues,
+    };
 
-      // Remove attribute if no values selected
-      if (newValues.length === 0) {
-        delete newAttributes[attribute];
-      }
-
-      // Update filters
+    // Remove attribute if no values selected
+    if (newValues.length === 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [attribute]: _, ...rest } = newAttributes;
+      setSelectedAttributes(rest);
+      updateFilters({ attributes: rest });
+    } else {
+      setSelectedAttributes(newAttributes);
       updateFilters({ attributes: newAttributes });
-      return newAttributes;
-    });
+    }
   };
 
   // Update filters
@@ -111,6 +123,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         update.attributes !== undefined
           ? update.attributes
           : selectedAttributes,
+      sortBy: currentFilters?.sortBy || "relevance", // Preserve sortBy
     };
 
     onFilterChange(updatedFilters);
@@ -128,6 +141,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       priceRange: { min: minPrice, max: maxPrice },
       inStock: false,
       attributes: {},
+      sortBy: currentFilters?.sortBy || "relevance", // Preserve sortBy
     });
   };
 

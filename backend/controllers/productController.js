@@ -7,7 +7,7 @@ import { deleteImage } from '../config/cloudinary.js';
 // @access  Public
 export const getProducts = async (req, res) => {
   try {
-    const pageSize = 10;
+    const pageSize = 12;
     const page = Number(req.query.pageNumber) || 1;
     
     // Build filter object
@@ -28,9 +28,58 @@ export const getProducts = async (req, res) => {
         $options: 'i', // case-insensitive
       };
     }
+
+    if (req.query.brands) {
+      const brandsArray = Array.isArray(req.query.brands) 
+        ? req.query.brands 
+        : req.query.brands.split(',');
+      filters.brand = { $in: brandsArray };
+    }
+    
+    if (req.query.minPrice || req.query.maxPrice) {
+      filters.price = {};
+      if (req.query.minPrice) {
+        filters.price.$gte = Number(req.query.minPrice);
+      }
+      if (req.query.maxPrice) {
+        filters.price.$lte = Number(req.query.maxPrice);
+      }
+    }
+    
+    if (req.query.inStock === 'true') {
+      filters.stock = { $gt: 0 };
+    }
+    
+    if (req.query.attributes) {
+      const attributes = JSON.parse(req.query.attributes);
+      for (const [key, values] of Object.entries(attributes)) {
+        if (values.length > 0) {
+          filters[`specifications.${key}`] = { $in: values };
+        }
+      }
+    }
     
     // Count total products matching filters
     const count = await Product.countDocuments(filters);
+
+    // Build sort object
+    let sortOptions = {};
+    switch (req.query.sortBy) {
+      case 'price_asc':
+        sortOptions = { price: 1 };
+        break;
+      case 'price_desc':
+        sortOptions = { price: -1 };
+        break;
+      case 'name_asc':
+        sortOptions = { name: 1 };
+        break;
+      case 'name_desc':
+        sortOptions = { name: -1 };
+        break;
+      default:
+        sortOptions = { createdAt: -1 };
+    }
     
     // Get products with pagination
     const products = await Product.find(filters)
@@ -46,6 +95,58 @@ export const getProducts = async (req, res) => {
     });
   } catch (error) {
     console.error('Get products error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// @desc    Advanced filtering options for products
+// @route   GET /api/products/filter-options
+// @access  Public
+export const getFilterOptions = async (req, res) => {
+  try {
+    const category = req.query.category;
+    let query = {};
+    
+    if (category) {
+      query.category = { $regex: category, $options: 'i' };
+    }
+    
+    // Get unique brands for the category
+    const brands = await Product.distinct('brand', query);
+    
+    // Get price range
+    const priceRange = await Product.aggregate([
+      { $match: query },
+      {
+        $group: {
+          _id: null,
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$price' }
+        }
+      }
+    ]);
+    
+    // Get unique specifications (attributes)
+    const specificationsKeys = await Product.aggregate([
+      { $match: query },
+      { $project: { specifications: { $objectToArray: '$specifications' } } },
+      { $unwind: '$specifications' },
+      { $group: { _id: '$specifications.k', values: { $addToSet: '$specifications.v' } } }
+    ]);
+    
+    // Format specifications
+    const attributes = {};
+    specificationsKeys.forEach(spec => {
+      attributes[spec._id] = spec.values;
+    });
+    
+    res.json({
+      brands: brands.sort(),
+      priceRange: priceRange[0] || { minPrice: 0, maxPrice: 0 },
+      attributes
+    });
+  } catch (error) {
+    console.error('Get filter options error:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

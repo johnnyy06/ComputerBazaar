@@ -1,10 +1,29 @@
 // frontend/src/components/Footer/Footer.tsx
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./Footer.module.css";
 
 const Footer: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validare email simplă
+    if (email.trim() !== "") {
+      // Afișăm mesajul de succes
+      setShowSuccessMessage(true);
+      setEmail("");
+
+      // Ascundem mesajul după 1.5 secunde
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 1500);
+    }
+  };
+
   return (
     <footer className={styles["site-footer"] + " py-5"}>
       <div className="container">
@@ -89,16 +108,21 @@ const Footer: React.FC = () => {
             </ul>
             <div className="newsletter mt-3">
               <h6 className="text-white">Abonează-te la newsletter</h6>
-              <div className="input-group">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Email"
-                />
-                <button className="btn btn-danger" type="button">
-                  Abonare
-                </button>
-              </div>
+              <form onSubmit={handleNewsletterSubmit}>
+                <div className="input-group">
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <button className="btn btn-danger" type="submit">
+                    Abonare
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -135,6 +159,19 @@ const Footer: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Pop-up de succes */}
+      {showSuccessMessage && (
+        <div
+          className={styles.successOverlay}
+          onClick={() => setShowSuccessMessage(false)}
+        >
+          <div className={styles.successAlert}>
+            <i className="bi bi-check-circle-fill"></i>
+            <span>Te-ai abonat cu succes!</span>
+          </div>
+        </div>
+      )}
     </footer>
   );
 };

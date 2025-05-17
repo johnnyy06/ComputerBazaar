@@ -85,7 +85,7 @@ export const getProducts = async (req, res) => {
     const products = await Product.find(filters)
       .limit(pageSize)
       .skip(pageSize * (page - 1))
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
     
     res.json({
       products,

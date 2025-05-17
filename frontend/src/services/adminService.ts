@@ -11,6 +11,14 @@ export interface UserData {
   updatedAt?: string;
 }
 
+export interface TopCustomer {
+  _id: string;
+  name: string;
+  email: string;
+  orderCount: number;
+  totalSpent: number;
+}
+
 export interface DashboardStats {
   userCount: number;
   productCount: number;
@@ -36,6 +44,7 @@ export interface DashboardStats {
     numReviews: number;
     stock: number;
   }>;
+  topCustomers?: TopCustomer[];
 }
 
 /**
@@ -71,7 +80,14 @@ export const deleteUser = async (userId: string): Promise<{ message: string }> =
 export const getAdminStats = async (): Promise<DashboardStats> => {
   try {
     const response = await api.get<DashboardStats>('/admin/dashboard');
-    return response.data;
+    
+    // Get top customers separately
+    const topCustomersResponse = await api.get<TopCustomer[]>('/admin/dashboard/top-customers');
+    
+    return {
+      ...response.data,
+      topCustomers: topCustomersResponse.data
+    };
   } catch (error) {
     console.error('Error fetching admin stats:', error);
     // Return default data if API call fails - to avoid breaking the dashboard
@@ -82,7 +98,8 @@ export const getAdminStats = async (): Promise<DashboardStats> => {
       totalRevenue: 0,
       lowStockCount: 0,
       recentOrders: [],
-      topProducts: []
+      topProducts: [],
+      topCustomers: []
     };
   }
 };

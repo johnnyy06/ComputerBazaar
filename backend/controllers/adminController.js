@@ -103,8 +103,39 @@ export const getAdminDashboardStats = async (req, res) => {
   }
 };
 
+// @desc    Get top customers by order count
+// @route   GET /api/admin/dashboard/top-customers
+// @access  Private/Admin
+export const getTopCustomers = async (req, res) => {
+  try {
+    // Get users with their order counts, sorted by count descending
+    const topCustomers = await User.aggregate([
+      { $lookup: {
+          from: 'orders',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'orders'
+      }},
+      { $project: {
+          name: 1,
+          email: 1,
+          orderCount: { $size: "$orders" },
+          totalSpent: { $sum: "$orders.totalPrice" }
+      }},
+      { $sort: { orderCount: -1 } },
+      { $limit: 5 }
+    ]);
+    
+    res.json(topCustomers);
+  } catch (error) {
+    console.error('Error fetching top customers:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 export default {
   getAllUsers,
   deleteUser,
-  getAdminDashboardStats
+  getAdminDashboardStats,
+  getTopCustomers
 };

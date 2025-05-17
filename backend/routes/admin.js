@@ -7,6 +7,7 @@ import {
   getAllUsers,
   deleteUser,
   getAdminDashboardStats,
+  getTopCustomers
 } from '../controllers/adminController.js';
 
 import {
@@ -30,6 +31,7 @@ router.use(isAdmin);
 
 // Dashboard stats
 router.get('/dashboard', getAdminDashboardStats);
+router.get('/dashboard/top-customers', getTopCustomers);
 
 // User management routes
 router.get('/users', getAllUsers);

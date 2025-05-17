@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./Hero.module.css";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   return (
@@ -19,9 +20,12 @@ const Hero: React.FC = () => {
               <button className="btn btn-danger btn-lg me-3">
                 Configurează PC
               </button>
-              <button className="btn btn-outline-light btn-lg">
+              <Link
+                className="btn btn-outline-light btn-lg"
+                to={"/category/Promotii"}
+              >
                 Oferte speciale
-              </button>
+              </Link>
             </div>
           </div>
           <div className="col-md-6">

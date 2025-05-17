@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { getAdminStats } from "../../services/adminService";
+import { getAdminStats, DashboardStats } from "../../services/adminService";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import AdminSidebar from "../../components/Admin/AdminSidebar";
+import TopCustomers from "../../components/Admin/TopCustomers";
 import styles from "./Dashboard.module.css";
 
 const Dashboard: React.FC = () => {
@@ -13,29 +14,6 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   // Dashboard stats
-  interface DashboardStats {
-    userCount: number;
-    productCount: number;
-    orderCount: number;
-    totalRevenue: number;
-    lowStockCount: number;
-    recentOrders: {
-      _id: string;
-      user: { name: string; email: string };
-      totalPrice: number;
-      isPaid: boolean;
-      isDelivered: boolean;
-      createdAt: string;
-    }[];
-    topProducts: {
-      _id: string;
-      name: string;
-      price: number;
-      rating: number;
-      stock: number;
-    }[];
-  }
-
   const [stats, setStats] = useState<DashboardStats>({
     userCount: 0,
     productCount: 0,
@@ -44,6 +22,7 @@ const Dashboard: React.FC = () => {
     lowStockCount: 0,
     recentOrders: [],
     topProducts: [],
+    topCustomers: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -215,7 +194,7 @@ const Dashboard: React.FC = () => {
 
                   <div className="row">
                     {/* Recent Orders */}
-                    <div className="col-lg-7 mb-4">
+                    <div className="col-lg-6 mb-4">
                       <div className="card bg-dark">
                         <div className="card-header d-flex justify-content-between align-items-center">
                           <h5 className="mb-0">Comenzi recente</h5>
@@ -244,35 +223,31 @@ const Dashboard: React.FC = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {stats.recentOrders.map(
-                                    (
-                                      order: DashboardStats["recentOrders"][number]
-                                    ) => (
-                                      <tr key={order._id}>
-                                        <td>{order._id.substring(0, 8)}...</td>
-                                        <td>{order.user?.name || "N/A"}</td>
-                                        <td>
-                                          {formatCurrency(order.totalPrice)}
-                                        </td>
-                                        <td>
-                                          {order.isDelivered ? (
-                                            <span className="badge bg-success">
-                                              Livrat
-                                            </span>
-                                          ) : order.isPaid ? (
-                                            <span className="badge bg-warning">
-                                              Plătit
-                                            </span>
-                                          ) : (
-                                            <span className="badge bg-danger">
-                                              Neprocesată
-                                            </span>
-                                          )}
-                                        </td>
-                                        <td>{formatDate(order.createdAt)}</td>
-                                      </tr>
-                                    )
-                                  )}
+                                  {stats.recentOrders.map((order) => (
+                                    <tr key={order._id}>
+                                      <td>{order._id.substring(0, 8)}...</td>
+                                      <td>{order.user?.name || "N/A"}</td>
+                                      <td>
+                                        {formatCurrency(order.totalPrice)}
+                                      </td>
+                                      <td>
+                                        {order.isDelivered ? (
+                                          <span className="badge bg-success">
+                                            Livrat
+                                          </span>
+                                        ) : order.isPaid ? (
+                                          <span className="badge bg-warning">
+                                            Plătit
+                                          </span>
+                                        ) : (
+                                          <span className="badge bg-danger">
+                                            Neprocesată
+                                          </span>
+                                        )}
+                                      </td>
+                                      <td>{formatDate(order.createdAt)}</td>
+                                    </tr>
+                                  ))}
                                 </tbody>
                               </table>
                             </div>
@@ -281,8 +256,15 @@ const Dashboard: React.FC = () => {
                       </div>
                     </div>
 
+                    {/* Top Customers Section */}
+                    <div className="col-lg-6 mb-4">
+                      <TopCustomers />
+                    </div>
+                  </div>
+
+                  <div className="row">
                     {/* Top Products */}
-                    <div className="col-lg-5">
+                    <div className="col-lg-12">
                       <div className="card bg-dark h-100">
                         <div className="card-header d-flex justify-content-between align-items-center">
                           <h5 className="mb-0">Top Produse</h5>
@@ -300,42 +282,38 @@ const Dashboard: React.FC = () => {
                             </p>
                           ) : (
                             <ul className={styles.topProductsList}>
-                              {stats.topProducts.map(
-                                (
-                                  product: DashboardStats["topProducts"][number]
-                                ) => (
-                                  <li
-                                    key={product._id}
-                                    className={styles.topProductItem}
-                                  >
-                                    <div className={styles.productInfo}>
-                                      <span className={styles.productName}>
-                                        {product.name}
-                                      </span>
-                                      <span className={styles.productPrice}>
-                                        {formatCurrency(product.price)}
+                              {stats.topProducts.map((product) => (
+                                <li
+                                  key={product._id}
+                                  className={styles.topProductItem}
+                                >
+                                  <div className={styles.productInfo}>
+                                    <span className={styles.productName}>
+                                      {product.name}
+                                    </span>
+                                    <span className={styles.productPrice}>
+                                      {formatCurrency(product.price)}
+                                    </span>
+                                  </div>
+                                  <div className={styles.productStats}>
+                                    <div className={styles.rating}>
+                                      <i className="bi bi-star-fill text-warning me-1"></i>
+                                      {product.rating.toFixed(1)}
+                                    </div>
+                                    <div className={styles.stock}>
+                                      <span
+                                        className={
+                                          product.stock < 5
+                                            ? "text-danger"
+                                            : "text-success"
+                                        }
+                                      >
+                                        {product.stock} în stoc
                                       </span>
                                     </div>
-                                    <div className={styles.productStats}>
-                                      <div className={styles.rating}>
-                                        <i className="bi bi-star-fill text-warning me-1"></i>
-                                        {product.rating.toFixed(1)}
-                                      </div>
-                                      <div className={styles.stock}>
-                                        <span
-                                          className={
-                                            product.stock < 5
-                                              ? "text-danger"
-                                              : "text-success"
-                                          }
-                                        >
-                                          {product.stock} în stoc
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </li>
-                                )
-                              )}
+                                  </div>
+                                </li>
+                              ))}
                             </ul>
                           )}
                         </div>

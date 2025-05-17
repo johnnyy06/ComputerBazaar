@@ -1,0 +1,42 @@
+/* frontend/src/components/Admin/TopCustomers.module.css */
+.customerAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary-red);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.cardBody .table {
+  margin-bottom: 0;
+}
+
+.cardBody .table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+}
+
+.cardBody .table tr:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.badgeInfo {
+  background-color: #0dcaf0 !important;
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+
+.customerAvatar {
+  transition: transform 0.3s;
+}
+
+tr:hover .customerAvatar {
+  transform: scale(1.1);
+}

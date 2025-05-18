@@ -1,0 +1,90 @@
+/* frontend/src/components/Reviews/ReviewsSection.module.css */
+.reviewsSection {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  color: var(--white);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.ratingOverview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ratingCount {
+  color: var(--light-gray);
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: var(--light-gray);
+}
+
+.loading .spinner-border {
+  margin-bottom: 1rem;
+}
+
+.reviewsContent {
+  position: relative;
+}
+
+.tabsContainer {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--secondary-gray);
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  color: var(--light-gray);
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.tabButton:hover {
+  color: var(--white);
+}
+
+.tabButton.active {
+  color: var(--primary-red);
+  font-weight: 600;
+}
+
+.tabButton.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--primary-red);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reviewsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,82 @@
+/* frontend/src/components/PCConfigurator/CompatibilityChecker.module.css */
+.compatibilityChecker {
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.compatibilityStatus {
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.compatible {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+.incompatible {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.issuesList {
+  margin-bottom: 20px;
+}
+
+.issuesList h5 {
+  color: #ff6b6b;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.issuesList ul {
+  padding-left: 10px;
+  list-style-type: none;
+}
+
+.issue {
+  color: #ff6b6b;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.compatibilityTips {
+  padding: 15px;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 123, 255, 0.2);
+}
+
+.compatibilityTips h5 {
+  color: #0d6efd;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.compatibilityTips ul {
+  padding-left: 20px;
+  color: #a0c3ff;
+  font-size: 0.9rem;
+}
+
+.compatibilityTips li {
+  margin-bottom: 5px;
+}
+
+.compatibilityInfo {
+  padding: 10px 15px;
+  background-color: rgba(23, 162, 184, 0.1);
+  border: 1px solid rgba(23, 162, 184, 0.2);
+  border-radius: 6px;
+  color: #5bc0de;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,62 @@
+/* frontend/src/components/FavoriteButton/FavoriteButton.module.css */
+.favoriteButton {
+  background: none;
+  border: none;
+  color: var(--light-gray);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.favoriteButton:hover {
+  color: var(--primary-red);
+}
+
+.favoriteButton.active {
+  color: var(--primary-red);
+}
+
+.favoriteButton:focus {
+  outline: none;
+}
+
+.favoriteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.favoriteButton i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favoriteButton span {
+  margin-left: 5px;
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+/* Animation for heart icon */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.favoriteButton.active i {
+  animation: pulse 0.3s ease-in-out;
+}

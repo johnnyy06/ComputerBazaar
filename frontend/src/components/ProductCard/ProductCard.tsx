@@ -1,7 +1,9 @@
-// frontend/src/components/ProductCard/ProductCard.tsx
+// Updated frontend/src/components/ProductCard/ProductCard.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ProductData } from "../../services/productService";
+import FavoriteButton from "../FavoriteButton/FavoriteButton";
+import RatingWidget from "../Reviews/RatingWidget";
 import styles from "./ProductCard.module.css";
 
 interface ProductCardProps {
@@ -82,6 +84,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
           )}
         </div>
 
+        {/* Add Favorite Button */}
+        <div className={styles.favoriteButtonContainer}>
+          <FavoriteButton product={product} iconOnly={true} />
+        </div>
+
         <Link
           to={`/product/${product._id}`}
           className={styles.productImageLink}
@@ -97,6 +104,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
           </Link>
 
           <div className={styles.productBrand}>Brand: {product.brand}</div>
+
+          {typeof product.rating === "number" && product.rating > 0 && (
+            <RatingWidget
+              rating={product.rating}
+              numReviews={product.numReviews || 0}
+              compact={true}
+            />
+          )}
 
           <ul className={styles.productSpecs}>
             {getTopSpecs().map(([key, value]) => (

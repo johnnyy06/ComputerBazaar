@@ -1,18 +1,34 @@
+// backend/models/ProductModel.js
 import { Schema, model } from 'mongoose';
 
 // Schema for product reviews
 const reviewSchema = new Schema({
   user: {
-    type: String, 
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  name: {
+    type: String,
     required: true
   },
   rating: {
     type: Number, 
-    required: true
+    required: true,
+    min: 1,
+    max: 5
   },
   comment: {
     type: String, 
     required: false
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
 }, { timestamps: true });
 

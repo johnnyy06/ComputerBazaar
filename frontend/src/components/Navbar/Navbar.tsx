@@ -1,4 +1,4 @@
-// Corrected Navbar.tsx
+// frontend/src/components/Navbar/Navbar.tsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -214,7 +214,19 @@ const Navbar: React.FC<NavbarProps> = () => {
           </div>
 
           {/* Desktop cart button - hidden on mobile */}
-          <div className="d-none d-lg-block">
+          <div className="d-none d-lg-flex">
+            {/* Favorites link for logged-in users */}
+            {user && (
+              <Link
+                to="/favorites"
+                className={`${styles.favoritesLink} me-2`}
+                aria-label="Favorites"
+                title="Favorite"
+              >
+                <i className="bi bi-heart"></i>
+              </Link>
+            )}
+
             <Link
               to="/cart"
               className={`btn btn-outline-light d-flex align-items-center justify-content-center ${styles["cart-button"]}`}

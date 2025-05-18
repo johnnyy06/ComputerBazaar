@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import AddressManagement from "../components/AddressManagement/AddressManagement";
 import PasswordChange from "../components/PasswordChange/PasswordChange";
+import FavoritesTab from "../components/FavoritesTab/FavoritesTab";
 import { updateUserProfile } from "../services/userService";
 
 enum ProfileTab {
@@ -37,6 +38,31 @@ const ProfilePage: React.FC = () => {
       setTempName(user.name || "");
     }
   }, [user]);
+
+  // Check if the URL has a tab parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+
+    if (tab) {
+      switch (tab) {
+        case "orders":
+          setActiveTab(ProfileTab.ORDERS);
+          break;
+        case "addresses":
+          setActiveTab(ProfileTab.ADDRESSES);
+          break;
+        case "favorites":
+          setActiveTab(ProfileTab.FAVORITES);
+          break;
+        case "password":
+          setActiveTab(ProfileTab.PASSWORD);
+          break;
+        default:
+          setActiveTab(ProfileTab.PROFILE);
+      }
+    }
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -96,6 +122,15 @@ const ProfilePage: React.FC = () => {
       setTempName(name);
     }
     setEditName(!editName);
+  };
+
+  const handleTabChange = (tab: ProfileTab) => {
+    setActiveTab(tab);
+
+    // Update URL with tab parameter
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", tab.toString());
+    window.history.pushState({}, "", url);
   };
 
   const renderTabContent = () => {
@@ -219,9 +254,7 @@ const ProfilePage: React.FC = () => {
           <h3 className="text-white">Comenzile mele vor fi afișate aici</h3>
         );
       case ProfileTab.FAVORITES:
-        return (
-          <h3 className="text-white">Produsele favorite vor fi afișate aici</h3>
-        );
+        return <FavoritesTab />;
       case ProfileTab.PASSWORD:
         return <PasswordChange />;
       default:
@@ -253,7 +286,7 @@ const ProfilePage: React.FC = () => {
                       color: "white",
                       border: "none",
                     }}
-                    onClick={() => setActiveTab(ProfileTab.PROFILE)}
+                    onClick={() => handleTabChange(ProfileTab.PROFILE)}
                   >
                     Profilul meu
                   </button>
@@ -267,7 +300,7 @@ const ProfilePage: React.FC = () => {
                       color: "white",
                       border: "none",
                     }}
-                    onClick={() => setActiveTab(ProfileTab.ORDERS)}
+                    onClick={() => handleTabChange(ProfileTab.ORDERS)}
                   >
                     Comenzile mele
                   </button>
@@ -281,7 +314,7 @@ const ProfilePage: React.FC = () => {
                       color: "white",
                       border: "none",
                     }}
-                    onClick={() => setActiveTab(ProfileTab.ADDRESSES)}
+                    onClick={() => handleTabChange(ProfileTab.ADDRESSES)}
                   >
                     Gestionează adrese
                   </button>
@@ -295,7 +328,7 @@ const ProfilePage: React.FC = () => {
                       color: "white",
                       border: "none",
                     }}
-                    onClick={() => setActiveTab(ProfileTab.FAVORITES)}
+                    onClick={() => handleTabChange(ProfileTab.FAVORITES)}
                   >
                     Produse favorite
                   </button>
@@ -309,7 +342,7 @@ const ProfilePage: React.FC = () => {
                       color: "white",
                       border: "none",
                     }}
-                    onClick={() => setActiveTab(ProfileTab.PASSWORD)}
+                    onClick={() => handleTabChange(ProfileTab.PASSWORD)}
                   >
                     Schimbă parola
                   </button>

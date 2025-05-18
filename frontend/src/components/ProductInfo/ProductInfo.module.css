@@ -1,70 +1,75 @@
-/* frontend/src/components/Product/ProductInfo.module.css */
+/* frontend/src/components/ProductInfo/ProductInfo.module.css */
 .productInfo {
-    margin-bottom: 2rem;
-  }
-  
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  color: var(--white);
+  font-weight: 700;
+  border-bottom: 2px solid var(--secondary-gray);
+  padding-bottom: 10px;
+  margin-bottom: 1rem;
+}
+
+.brand {
+  color: var(--light-gray);
+  margin-bottom: 1rem;
+}
+
+.brandName {
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* Adăugăm styling pentru secțiunea de rating */
+.ratingSection {
+  margin-bottom: 1rem;
+}
+
+.price {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--secondary-gray);
+  margin-bottom: 1.5rem;
+}
+
+.currentPrice {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.oldPrice {
+  font-size: 1.3rem;
+  color: var(--light-gray);
+  text-decoration: line-through;
+  margin-right: 10px;
+  font-weight: 400;
+}
+
+.discountBadge {
+  background-color: var(--primary-red);
+  color: var(--white);
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 1rem;
+}
+
+.description {
+  color: var(--white);
+  line-height: 1.7;
+  border-bottom: 1px solid var(--secondary-gray);
+  padding-bottom: 15px;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
   .title {
-    font-size: 2rem;
-    color: var(--white);
-    font-weight: 700;
-    border-bottom: 2px solid var(--secondary-gray);
-    padding-bottom: 10px;
-    margin-bottom: 1rem;
-  }
-  
-  .brand {
-    color: var(--light-gray);
-    margin-bottom: 1rem;
-  }
-  
-  .brandName {
-    color: var(--white);
-    font-weight: 600;
-  }
-  
-  .price {
-    padding: 15px 0;
-    border-bottom: 1px solid var(--secondary-gray);
-    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
   }
   
   .currentPrice {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: var(--white);
+    font-size: 1.8rem;
   }
-  
-  .oldPrice {
-    font-size: 1.3rem;
-    color: var(--light-gray);
-    text-decoration: line-through;
-    margin-right: 10px;
-    font-weight: 400;
-  }
-  
-  .discountBadge {
-    background-color: var(--primary-red);
-    color: var(--white);
-    padding: 3px 10px;
-    border-radius: 5px;
-    margin-left: 10px;
-    font-size: 1rem;
-  }
-  
-  .description {
-    color: var(--white);
-    line-height: 1.7;
-    border-bottom: 1px solid var(--secondary-gray);
-    padding-bottom: 15px;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 992px) {
-    .title {
-      font-size: 1.8rem;
-    }
-    
-    .currentPrice {
-      font-size: 1.8rem;
-    }
-  }
+}

@@ -30,6 +30,8 @@ import adminRoutes from './routes/admin.js';
 import uploadRoutes from './routes/upload.js';
 import orderRoutes from './routes/orders.js';
 import searchRoutes from './routes/search.js';
+import favoritesRoutes from './routes/favorites.js';
+import reviewRoutes from './routes/reviews.js';
 
 // folosire rute
 app.use('/api/auth', authRoutes);
@@ -39,6 +41,8 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/favorites', favoritesRoutes);
+app.use('/api/products', reviewRoutes);
 
 // Rută de bază pentru testare API
 app.get('/api', (req, res) => {

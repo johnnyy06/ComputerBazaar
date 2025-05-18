@@ -44,6 +44,8 @@ import RTX4000Series from "./RTX4000Series";
 import Checkout from "./Checkout";
 import OrderDetails from "./OrderDetails";
 import Orders from "./Orders";
+import Favorites from "./Favorites";
+import PCConfigurator from "./PCConfigurator";
 
 // Admin Pages
 import AdminDashboard from "./admin/Dashboard";
@@ -75,6 +77,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/configurator" element={<PCConfigurator />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route
@@ -103,6 +106,14 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <Orders />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/favorites"
+                element={
+                  <ProtectedRoute>
+                    <Favorites />
                   </ProtectedRoute>
                 }
               />

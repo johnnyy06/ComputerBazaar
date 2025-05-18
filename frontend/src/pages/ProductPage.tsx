@@ -11,6 +11,9 @@ import ProductInfo from "../components/ProductInfo/ProductInfo";
 import ProductStock from "../components/ProductStock/ProductStock";
 import ProductActions from "../components/ProductActions/ProductActions";
 import ProductSpecs from "../components/ProductSpecs/ProductSpecs";
+import ReviewsSection from "../components/Reviews/ReviewsSection";
+import FavoriteButton from "../components/FavoriteButton/FavoriteButton";
+import "./styles.css";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -114,12 +117,20 @@ const ProductPage: React.FC = () => {
 
             {/* Product Details */}
             <div className="col-lg-6">
-              <ProductInfo
-                name={product.name}
-                brand={product.brand}
-                price={product.price}
-                description={product.description}
-              />
+              {/* Product Info with Favorite Button */}
+              <div className="productHeader">
+                <ProductInfo
+                  name={product.name}
+                  brand={product.brand}
+                  price={product.price}
+                  description={product.description}
+                  rating={product.rating}
+                  numReviews={product.numReviews}
+                />
+                <div className="favoriteButtonContainer">
+                  <FavoriteButton product={product} />
+                </div>
+              </div>
 
               <ProductStock stock={product.stock} />
 
@@ -133,6 +144,7 @@ const ProductPage: React.FC = () => {
           </div>
 
           {/* Additional sections like related products, reviews, etc. can be added here */}
+          {id && <ReviewsSection productId={id} />}
         </div>
       </div>
       <Footer />

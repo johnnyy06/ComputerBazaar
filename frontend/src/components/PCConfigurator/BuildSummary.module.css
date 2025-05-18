@@ -1,0 +1,165 @@
+/* frontend/src/components/PCConfigurator/BuildSummary.module.css */
+.buildSummary {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.title {
+  color: #ffffff;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #444;
+  font-size: 1.3rem;
+}
+
+.progressContainer {
+  margin-bottom: 20px;
+}
+
+.progressText {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  color: #adb5bd;
+  font-size: 0.9rem;
+}
+
+.progressBar {
+  height: 8px;
+  background-color: #444;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #ff0000;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.componentsList {
+  margin-bottom: 20px;
+}
+
+.componentRow {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #444;
+}
+
+.componentRow:last-child {
+  border-bottom: none;
+}
+
+.componentName {
+  width: 40%;
+  color: #999;
+  font-weight: 500;
+}
+
+.componentValue {
+  width: 60%;
+}
+
+.productName {
+  color: #fff;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productPrice {
+  color: #ff0000;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.notSelected {
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.totalPrice {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  margin: 15px 0;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+}
+
+.totalLabel {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.totalValue {
+  color: #ff0000;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.compatibilityWarning {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.addToCartButton {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addToCartButton:hover:not(:disabled) {
+  background-color: #cc0000;
+}
+
+.addToCartButton:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.notice {
+  margin-top: 15px;
+  color: #adb5bd;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .componentRow {
+    flex-direction: column;
+    padding: 15px 0;
+  }
+  
+  .componentName {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  .componentValue {
+    width: 100%;
+  }
+}

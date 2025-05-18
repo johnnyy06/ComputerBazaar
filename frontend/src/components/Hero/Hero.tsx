@@ -17,9 +17,9 @@ const Hero: React.FC = () => {
               Sisteme personalizate și componente premium pentru cel mai bun PC.
             </p>
             <div className="mt-4">
-              <button className="btn btn-danger btn-lg me-3">
+              <Link className="btn btn-danger btn-lg me-3" to={"/configurator"}>
                 Configurează PC
-              </button>
+              </Link>
               <Link
                 className="btn btn-outline-light btn-lg"
                 to={"/category/Promotii"}

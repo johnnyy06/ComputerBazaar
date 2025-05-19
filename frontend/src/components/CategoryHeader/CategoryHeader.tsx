@@ -14,7 +14,6 @@ const CategoryHeader: React.FC<CategoryHeaderProps> = ({
   productCount,
   loading = false,
 }) => {
-  // Get category description - could be expanded to get from a database
   const getCategoryDescription = (categoryName: string): string => {
     const descriptions: { [key: string]: string } = {
       Procesoare:

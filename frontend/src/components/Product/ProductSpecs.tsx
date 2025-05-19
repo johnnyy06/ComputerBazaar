@@ -1,4 +1,4 @@
-// frontend/src/components/ProductSpecs/ProductSpecs.tsx
+// frontend/src/components/Product/ProductSpecs.tsx
 import React from "react";
 import styles from "./ProductSpecs.module.css";
 

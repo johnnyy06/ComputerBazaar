@@ -10,12 +10,11 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-import OrderInfo from "../components/OrderInfo/OrderInfo";
-import OrderDetailsCard from "../components/OrderDetailsCard/OrderDetailsCard";
-import OrderItemsCard from "../components/OrderItemsCard/OrderItemsCard";
-import OrderSummaryCard from "../components/OrderSummaryCard/OrderSummaryCard";
+import OrderInfo from "../components/Order/OrderInfo";
+import OrderDetailsCard from "../components/Order/OrderDetailsCard";
+import OrderItemsCard from "../components/Order/OrderItemsCard";
+import OrderSummaryCard from "../components/Order/OrderSummaryCard";
 
-// Importăm stilurile globale pentru pagini de comenzi
 import "./styles.css";
 
 const OrderDetails: React.FC = () => {
@@ -238,7 +237,7 @@ const OrderDetails: React.FC = () => {
           </div>
 
           <div className="col-lg-4">
-            {/* Order Summary - now using the proper component */}
+            {/* Order Summary */}
             <OrderSummaryCard
               subtotal={subtotal}
               taxPrice={order.taxPrice}

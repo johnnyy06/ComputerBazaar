@@ -1,4 +1,4 @@
-// frontend/src/components/OrderItemsList/OrderItemsList.tsx
+// frontend/src/components/Order/OrderItemsList.tsx
 import React from "react";
 import { CartItem } from "../../context/CartContextDefinition";
 import styles from "./OrderItemsList.module.css";

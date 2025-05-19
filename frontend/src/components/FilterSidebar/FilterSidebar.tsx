@@ -1,4 +1,4 @@
-// frontend/src/components/FilterSidebar/FilterSidebar.tsx (Fixed)
+// frontend/src/components/FilterSidebar/FilterSidebar.tsx
 import React, { useState, useEffect } from "react";
 import styles from "./FilterSidebar.module.css";
 import { FilterOptions } from "../../services/productService";

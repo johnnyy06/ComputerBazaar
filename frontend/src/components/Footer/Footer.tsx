@@ -75,9 +75,6 @@ const Footer: React.FC = () => {
               <li>
                 <Link to="/profile">Contul meu</Link>
               </li>
-              {/* <li>
-                <Link to="/orders">Urmărește comanda</Link>
-              </li> */}
               <li>
                 <Link to="/technical-support">Suport tehnic</Link>
               </li>

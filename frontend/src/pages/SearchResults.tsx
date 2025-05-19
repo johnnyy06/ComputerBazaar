@@ -8,7 +8,7 @@ import Footer from "../components/Footer/Footer";
 import SearchHeader from "../components/SearchHeader/SearchHeader";
 import SearchTools from "../components/SearchTools/SearchTools";
 import SearchEmptyState from "../components/SearchEmptyState/SearchEmptyState";
-import ProductGrid from "../components/ProductGrid/ProductGrid";
+import ProductGrid from "../components/Product/ProductGrid";
 import Pagination from "../components/Pagination/Pagination";
 import FilterSidebar from "../components/FilterSidebar/FilterSidebar";
 

@@ -6,11 +6,11 @@ import { useCart } from "../hooks/useCart";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb";
-import ProductGallery from "../components/ProductGallery/ProductGallery";
-import ProductInfo from "../components/ProductInfo/ProductInfo";
-import ProductStock from "../components/ProductStock/ProductStock";
-import ProductActions from "../components/ProductActions/ProductActions";
-import ProductSpecs from "../components/ProductSpecs/ProductSpecs";
+import ProductGallery from "../components/Product/ProductGallery";
+import ProductInfo from "../components/Product/ProductInfo";
+import ProductStock from "../components/Product/ProductStock";
+import ProductActions from "../components/Product/ProductActions";
+import ProductSpecs from "../components/Product/ProductSpecs";
 import ReviewsSection from "../components/Reviews/ReviewsSection";
 import FavoriteButton from "../components/FavoriteButton/FavoriteButton";
 import "./styles.css";
@@ -143,7 +143,6 @@ const ProductPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Additional sections like related products, reviews, etc. can be added here */}
           {id && <ReviewsSection productId={id} />}
         </div>
       </div>

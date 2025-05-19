@@ -9,8 +9,8 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import ShippingAddressSelector from "../components/ShippingAddressSelector/ShippingAddressSelector";
 import PaymentMethodSelector from "../components/PaymentMethodSelector/PaymentMethodSelector";
-import OrderItemsList from "../components/OrderItemsList/OrderItemsList";
-import OrderSummary from "../components/OrderSummary/OrderSummary";
+import OrderItemsList from "../components/Order/OrderItemsList";
+import OrderSummary from "../components/Order/OrderSummary";
 
 import "./styles.css";
 

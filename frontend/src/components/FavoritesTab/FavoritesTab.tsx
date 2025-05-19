@@ -40,7 +40,6 @@ const FavoritesTab: React.FC = () => {
   const handleRemoveFavorite = async (productId: string) => {
     try {
       await removeFromFavorites(productId);
-      // Remove product from local state
       setFavorites(favorites.filter((product) => product._id !== productId));
     } catch (err) {
       console.error("Error removing favorite:", err);

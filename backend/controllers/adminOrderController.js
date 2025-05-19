@@ -14,13 +14,13 @@ export const getAllOrders = async (req, res) => {
     let query = {};
     
     if (keyword) {
-      // Dacă keyword-ul este un ObjectId valid, căutăm după _id
+      // if keyword is a valid ObjectId , search by _id
       const isObjectId = keyword.match(/^[0-9a-fA-F]{24}$/);
       
       if (isObjectId) {
         query = { _id: keyword };
       } else {
-        // Mai întâi găsim utilizatorii care se potrivesc cu criteriul de căutare
+        // first match an user by name or email
         const matchingUsers = await User.find({
           $or: [
             { name: { $regex: keyword, $options: 'i' } },
@@ -28,10 +28,10 @@ export const getAllOrders = async (req, res) => {
           ]
         });
         
-        // Extragem ID-urile utilizatorilor găsiți
+        // if no user found, search by address
         const userIds = matchingUsers.map(user => user._id);
         
-        // Căutăm comenzi cu acești utilizatori sau alte criterii
+        // looking for orders by user or by address
         query = {
           $or: [
             { user: { $in: userIds } },

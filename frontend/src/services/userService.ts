@@ -5,7 +5,6 @@ import api from './api';
 interface UserProfileUpdateData {
   name?: string;
   phone?: string;
-  // Other updatable fields can be added here
 }
 
 // Interface for the response data

@@ -1,4 +1,4 @@
-// Updated frontend/src/components/ProductCard/ProductCard.tsx
+// Updated frontend/src/components/Product/ProductCard.tsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ProductData } from "../../services/productService";

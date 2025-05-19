@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react";
 import { getMyOrders, OrderData } from "../services/orderService";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-import OrderCard from "../components/OrderCard/OrderCard";
+import OrderCard from "../components/Order/OrderCard";
 import EmptyOrdersMessage from "../components/EmptyOrdersMessage/EmptyOrdersMessage";
 
-// Importăm stilurile globale pentru pagini de comenzi
 import "./styles.css";
 
 const Orders: React.FC = () => {

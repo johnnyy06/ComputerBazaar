@@ -332,7 +332,6 @@ export const getProductCountByCategory = async (req, res) => {
       }
     ]);
     
-    // Convertește rezultatul într-un obiect pentru accesare mai usoara
     const countsMap = {};
     categoryCounts.forEach(item => {
       if (item._id) {

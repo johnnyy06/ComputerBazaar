@@ -1,4 +1,4 @@
-// frontend/src/components/OrderItemsCard/OrderItemsCard.tsx
+// frontend/src/components/Order/OrderItemsCard.tsx
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./OrderItemsCard.module.css";

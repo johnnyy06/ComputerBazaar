@@ -63,15 +63,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab }) => {
         >
           <i className="bi bi-cart-check me-2"></i> Comenzi
         </Link>
-        {/* <Link
-          to="/admin/categories"
-          className={`list-group-item list-group-item-action ${
-            activeTab === "categories" ? "active" : ""
-          }`}
-          onClick={() => window.innerWidth < 768 && setIsExpanded(false)}
-        >
-          <i className="bi bi-tags me-2"></i> Categorii
-        </Link> */}
       </div>
 
       <style>{`

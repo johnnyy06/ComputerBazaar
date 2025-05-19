@@ -21,7 +21,6 @@ export const searchProducts = async (req, res) => {
           { name: { $regex: keyword, $options: 'i' } },
           { description: { $regex: keyword, $options: 'i' } },
           { brand: { $regex: keyword, $options: 'i' } }
-          // Removed specifications search as it's a Map type
         ]
       };
     }

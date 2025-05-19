@@ -1,4 +1,4 @@
-// frontend/src/components/OrderDetailsCard/OrderDetailsCard.tsx
+// frontend/src/components/Order/OrderDetailsCard.tsx
 import React from "react";
 import styles from "./OrderDetailsCard.module.css";
 

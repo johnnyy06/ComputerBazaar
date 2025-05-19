@@ -20,7 +20,6 @@ const storage = new CloudinaryStorage({
     folder: 'computer-bazaar',
     allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
     transformation: [{ width: 1000, height: 1000, crop: 'limit' }], // Resize images to max dimensions
-    // You can add more transformations as needed
   }
 });
 

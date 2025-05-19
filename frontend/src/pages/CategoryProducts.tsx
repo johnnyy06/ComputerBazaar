@@ -12,7 +12,7 @@ import { useCart } from "../hooks/useCart";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import CategoryHeader from "../components/CategoryHeader/CategoryHeader";
-import ProductGrid from "../components/ProductGrid/ProductGrid";
+import ProductGrid from "../components/Product/ProductGrid";
 import Pagination from "../components/Pagination/Pagination";
 import FilterSidebar from "../components/FilterSidebar/FilterSidebar";
 import FilterModal from "../components/FilterModal/FilterModal";

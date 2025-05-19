@@ -317,7 +317,6 @@ const ProductForm: React.FC<ProductFormProps> = ({
         ></textarea>
       </div>
 
-      {/* Images - Using the new ImageUpload component */}
       <div className="mb-3">
         <label className="form-label">Imagini produs *</label>
         <div className="mb-2">
@@ -402,7 +401,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         >
           Anulare
         </button>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
+        <button type="submit" className="btn btn-danger" disabled={loading}>
           {loading ? (
             <>
               <span className="spinner-border spinner-border-sm me-2"></span>

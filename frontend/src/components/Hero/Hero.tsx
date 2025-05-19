@@ -1,3 +1,4 @@
+// frontend/src/components/Hero/Hero.tsx
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import styles from "./Hero.module.css";

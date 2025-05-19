@@ -16,7 +16,6 @@ const Categories: React.FC = () => {
     {}
   );
 
-  // Static categories as you already have them
   const staticCategories: Category[] = [
     {
       id: 1,
@@ -61,7 +60,6 @@ const Categories: React.FC = () => {
     fetchProductCounts();
   }, []);
 
-  // Update category items with real counts
   const displayCategories = staticCategories.map((category) => ({
     ...category,
     items: productCounts[category.name] || 0,

@@ -1,4 +1,4 @@
-/* Hero Section */
+/* frontend/src/components/Hero/Hero.module.css */
 .hero-section {
     background-color: var(--primary-black);
     background-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(68,68,68,0.7) 100%);

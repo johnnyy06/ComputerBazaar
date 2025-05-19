@@ -1,7 +1,7 @@
-// frontend/src/components/ProductGrid/ProductGrid.tsx
+// frontend/src/components/Product/ProductGrid.tsx
 import React from "react";
 import { ProductData } from "../../services/productService";
-import ProductCard from "../ProductCard/ProductCard";
+import ProductCard from "./ProductCard";
 import styles from "./ProductGrid.module.css";
 
 interface ProductGridProps {

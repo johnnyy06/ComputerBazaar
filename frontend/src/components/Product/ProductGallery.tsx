@@ -1,4 +1,4 @@
-// frontend/src/components/ProductGallery/ProductGallery.tsx
+// frontend/src/components/Product/ProductGallery.tsx
 import React, { useState, useEffect } from "react";
 import { UploadedImage } from "../../services/uploadService";
 import styles from "./ProductGallery.module.css";

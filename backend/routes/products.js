@@ -1,3 +1,4 @@
+// backend/routes/product.js
 import express from 'express';
 import { getProducts, getProductById, createProduct, getProductCountByCategory, getRecommendedProducts, getFilterOptions } from '../controllers/productController.js';
 

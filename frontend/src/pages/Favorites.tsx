@@ -7,7 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-import ProductCard from "../components/ProductCard/ProductCard";
+import ProductCard from "../components/Product/ProductCard";
 import styles from "./Favorites.module.css";
 
 const Favorites: React.FC = () => {
